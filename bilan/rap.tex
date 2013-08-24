@@ -1,0 +1,338 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{textcomp}
+\usepackage{fullpage}
+\usepackage{algorithm2e}
+\usepackage{caption}
+\usepackage{subcaption}
+\frenchbsetup{ReduceListSpacing=false,CompactItemize=false}
+
+\title{Recherches et réalisations relatives à une plateforme de
+       collaboration estudiantine}
+\author{Draft}
+
+\begin{document}
+
+\abovedisplayskip=1pt plus 0pt minus 0pt
+\abovedisplayshortskip=6pt plus 3pt
+\belowdisplayskip=9pt plus 3pt minus 9pt
+\belowdisplayshortskip=9pt plus 3pt minus 4pt
+
+\setlength{\voffset}{-20pt}
+
+\begin{titlepage}
+\begin{center}
+
+\begin{minipage}{2in}
+	\begin{flushleft}
+		\textsf{\small{
+		Faculté des Sciences\\
+		Département d'Informatique}}
+	\end{flushleft}
+\end{minipage}
+\begin{minipage}{4in}
+	\begin{flushright}
+		\includegraphics[scale=0.20]{imgs/ulb2.pdf}
+	\end{flushright}
+\end{minipage}
+
+\vspace{120pt}
+
+{\Large \bfseries Recherches et réalisations relatives à une plateforme de
+       collaboration estudiantine}
+
+\vspace{20pt}
+
+\large{X \textsc{X}}
+
+\vspace{90pt}
+
+\includegraphics[scale=0.6]{imgs/ulb1.pdf}
+\end{center}
+\end{titlepage}
+
+\setlength{\footskip}{40pt}
+
+\abovedisplayskip=9pt plus 3pt minus 9pt
+\abovedisplayshortskip=6pt plus 3pt
+\belowdisplayskip=9pt plus 3pt minus 9pt
+\belowdisplayshortskip=9pt plus 3pt minus 4pt
+\setlength{\parskip}{0.5ex plus 0.2ex minus 0.2ex}
+\setlength{\parindent}{0pt}
+
+\newpage
+\setlength{\voffset}{0pt}
+\setcounter{tocdepth}{2}
+\addcontentsline{toc}{subsection}{Table des matières}
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+\section{Historique, p402, fognar, beta402}
+\section{Python, django, pourquoi + exemple de gros site}
+
+\section{Architecture générale de Django}
+
+Django est un \textit{framework} web dont le langage principal est Python et
+dont l'architecture applique les principes de séparation des tâches, inspiré du
+modèle MVC. Le but de ce logiciel est de permettre la conception rapide de site
+en fournissant une série d'outils et de techniques au développeur. Par exemple,
+Django rend transparent l'usage d'une base de donnée, standardise la manière
+d'envoyer une page à l'utilisateur, fourni un système de session et d'authentification,
+un système de gestion des logs intégrés...
+
+La liste des fonctionnalités offertes par Django est assez longue, il est malheureusement
+impossible d'être exhaustif dans le cadre de ce travail. Les plus importantes
+ou celle spécifiquement employé par le projet seront détaillée dans les sections suivante.
+
+Le protocole HTTP est un protocole sans état (\textit{stateless}), c'est à dire
+que le client ou le serveur ne peuvent déterminer l'état de l'application client uniquement
+sur base de la session HTTP. Cela implique qu'il est possible de traiter chaque requète HTTP
+de manière individuelle, sans se soucier de celle qui avait avant ou après. Malheureusement,
+pour la majorité des applications il faut aussi mettre en place un mécanisme permettant
+d'identifier le client, de garder certaines propriétés de ce dernier...
+
+Pour chaque requète d'une page web que le client fait au serveur, cette dernière
+va arriver à Django au niveau du résolveur d'URL, première étape sur la figure XX.
+Cette étape permet d'associer une fonction
+à chaque demande du client. Les URLs sont reconnue au moyen d'expressions rationnelles.
+Par exemple, si le développeur veut deux pages web différentes, l'une affichant
+le résultat de la fonction \textit{page1} à l'adresse \texttt{http://host/path/index/} et
+l'autre affichant le résultat de la fonction \textit{page2} à l'adresse
+\texttt{http://host/path/page2/123/}, 123 étant un ID unique, il pourrait employer
+le reconnaisseur d'URL suivant :
+
+\begin{verbatim}
+urlpatterns = patterns("",
+    url(r"^path/index/$", page1),
+    url(r"^path/page2/(\d)/$", page2),
+)
+\end{verbatim}
+
+Le résolveur d'URL permet d'extraire certaines partie de l'URL reconnue et de les donnés
+comme argument à la fonction à appeller. Dans l'exemple précédent, la fonction \textit{page2}
+sera appelé avec le nombre en fin d'URL en argument.
+
+Cette fonction est appellée la \textit{view}. Cette dernière prend au minimum un paramètre,
+un objet requète. Il contient énormément d'information sur le client, l'url demandé,
+la méthode HTTP employé, des paramètres du serveur... Le rôle de cette fonction
+est de fabriquer la page web envoyé au client, c'est sa valeur de retour. Pour ce faire,
+la fonction fait usuellement des requètes à la base de donnée en employant des modèles
+d'objet et calcule le rendu de la page en employant le moteur de \textit{template}.
+
+Par exemple, pour afficher l'index de l'exemple précédent, avec la fonction \textit{page1},
+en souhaitant la bienvenue à l'utilisateur, le développeur pourrait employer le code
+suivant~:
+
+\begin{verbatim}
+def page1(request):
+    return render("index.html",
+                  {"user": request.user.login})
+\end{verbatim}
+
+La fonction \textit{render} est un raccourci permettant d'appeller le moteur
+de rendu de \textit{template}, de lui demander d'employer le fichier \texttt{index.html}
+avec comme paramètre une variable \textit{user} dont la valeur est égale
+au login de l'utilisateur.
+
+
+template + schéma + class based generic view
+
+
+\section{Interaction avec la base de donnée}
+
+Un \textit{Object-relational mapping} (ORM) est une technique
+pour convertire des objets en mémoire en enregistrement dans une base de donnée
+relationnelle et inversément. Cette technique est très puissante et permet
+au programmeur de ne plus interagir directement avec la base de donnée, juste
+de manipuler des objets. A ce titre, Django possède un ORM, dont les principales
+caractéristique vont être développée ici.
+
+Comme évoqué dans la section précédente, la fonction \textit{view} a la responsabilité
+du calcul de la page. Souvent cette dernière se base sur des informations présentes
+en base de donnée. Chaque enregistrement de cette dernière, pour être exploitable
+par Django, devra être assortie à un modèle, c'est à dire une \textit{class} Python
+ayant une structure compréhensible par Django. Ce dernier créera le type dans la
+base de donnée, y insérera les nouveaux éléments, supprimera ceux qu'il faut...
+
+Par exemple, dans le cadre de l'application de collaboration, il faudra un objet
+\textit{cours}. Ce dernier représentera un cours, aura un nom, une description,
+un mnémonique (slug\footnote{https://en.wikipedia.org/wiki/Slug\_\%28publishing\%29}).
+De plus, il sera possible de lier des documents et des fils de discussion à des
+cours, d'où les relations \textit{manytomany} vers des objets de type Document
+et Thread.
+
+\begin{verbatim}
+class Course(models.Model):
+    slug = models.SlugField(unique=True)
+    name = models.TextField()
+    description = models.TextField(null=True)
+    documents = models.ManyToManyField(Document)
+    threads = models.ManyToManyField(Thread)
+\end{verbatim}
+
+L'ORM de Django permet de manipuler des objets cours grâce à une API simple.
+Il est possible de créer des nouveaux objets en les instanciant, de les
+sauver en base de donner, de lire ou modifier une valeur d'un champs,
+de les supprimer, comme le monde l'exemple suivant :
+
+\begin{verbatim}
+>>> from application.models import Course
+>>> c = Course(name="Informatique", slug="info-f-101", description="example")
+>>> c
+<Course: Informatique>
+>>> c.save()
+>>> c.name = "Informatique update"
+>>> c.name
+"Informatique update"
+>>> c.save()
+\end{verbatim}
+
+\section{Synchronisation entre les différentes versions des modèles
+         et la base de donnée}
+
+Comme évoqué précédement, le code décrivant les
+modèle est notament utilisé pour associer les champs des enregistrements
+au propriété des objets. Cette technique permet de ne pas avoir
+à s'occuper d'interagir avec la base de donnée et de s'occuper d'objet uniquement.
+Malheureusement, au fil de l'évolution du projet, la structure des différents modèles
+est amené à changer : il faut que la structure de la base de donnée évolue avec.
+De cette constation découle plusieurs questions : comment, quoi, qui?
+
+Ce travail conseil d'employer l'application \textit{django-south}
+\footnote{http://south.aeracode.org/}. Cette dernière permet de garder l'état d'un modèle
+à différent moment de son développement et à calculer des \textit{deltas} de modèle, équivalent
+à un delta d'un code source dans un système de gestion de version. Ensuite,
+à la demande de l'utilisateur, \textit{django-south} applique les \textit{deltas}
+(appellé migrations) sur la base de donnée. Il possède des mécanismes pour les
+appliquer dans l'ordre, ne pas les appliquer plusieurs fois, migrer les
+données en même temps que le régleage de la table, possibilité de faire un rollback
+sur une migration...
+
+Physiquement, les migrations sont stockées dans des fichiers dans un sous dossier
+\textit{migrations} de l'application django. Elle sont sous la forme de fichier
+Python, pouvant être controler avec un système de gestion de version. Une explication
+détaillée est disponible sur le site de \textit{djangopro}
+\footnote{http://www.djangopro.com/2011/01/django-database-migration-tool-south-explained/}.
+
+Par exemple, voici une session d'utilisation de l'outil \textit{django-south}.
+Le scénario d'utilisation est le suivant : sur un ordinateur \texttt{(ve)}, le développeur
+ajoute un nouveau modèle \textit{lapin} à l'application \textit{animal}. Ensuite,
+il modifie ce modèle en ajoutant un champs. Par la suite, il copie les différents
+fichiers sur une autre machines possédant déjà une base de donnée. Il convient de
+modifier cette dernière pour être synchronisé avec les sources de l'application,
+avec la commance \texttt{migrate}.
+
+\begin{verbatim}
+# Django app "animal", un seul modele : le Lapin, possédant un nom
+(ve) $ cat animal/models.py
+from django.db import models
+
+class Lapin(models.Model):
+    name = models.TextField()
+
+# Initialisation du système Django-south
+(ve) $ ./manage.py schemamigration animal --init
+Creating migrations directory at '/home/hastake/mouh/mouh/animal/migrations'...
+Creating __init__.py in '/home/hastake/mouh/mouh/animal/migrations'...
+ + Added model animal.Lapin
+Created 0001_initial.py.
+You can now apply this migration with: ./manage.py migrate animal
+
+# Application de la migration, contenant le nouveau modèle
+(ve)hastake@phenyl ~/mouh/mouh $ ./manage.py migrate animal
+Running migrations for animal:
+ - Migrating forwards to 0001_initial.
+ > animal:0001_initial
+ - Loading initial data for animal.
+Installed 0 object(s) from 0 fixture(s)
+
+# Modification du modèle, ajout d'un champs, la race du lapin
+(ve) $ cat animal/models.py
+from django.db import models
+
+class Lapin(models.Model):
+    name = models.TextField()
+    race = models.TextField(default="blanc")
+
+# Création d'une nouvelle migration ajoutant la race du lapin, application
+(ve) $ ./manage.py schemamigration animal --auto
+ + Added field race on animal.Lapin
+Created 0002_auto__add_field_lapin_race.py.
+You can now apply this migration with: ./manage.py migrate animal
+(ve) $ ./manage.py migrate animal
+Running migrations for animal:
+ - Migrating forwards to 0002_auto__add_field_lapin_race.
+ > animal:0002_auto__add_field_lapin_race
+ - Loading initial data for animal.
+Installed 0 object(s) from 0 fixture(s)
+
+# Sur une autre machine, après avoir mis à jour les sources
+# de l'application (dont les migrations) : commande "migrate"
+# exécute toutes les migrations manquantes
+(ve remote) $ ./manage.py migrate
+Running migrations for animal:
+ - Migrating forwards to 0002_auto__add_field_lapin_race.
+ > animal:0001_initial
+ > animal:0002_auto__add_field_lapin_race
+ - Loading initial data for animal.
+Installed 0 object(s) from 0 fixture(s)
+
+# Affichage des migrations : 
+(ve) $ ls animal/migrations/
+0001_initial.py
+0002_auto__add_field_lapin_race.py
+__init__.py
+\end{verbatim}
+
+A l'heure où ces lignes sont écrites, un nouveau système est déployé sur
+les nouvelles version de Django : \textit{Schema alteration}
+\footnote{http://www.kickstarter.com/projects/andrewgodwin/schema-migrations-for-django}
+\footnote{https://github.com/django/django/pull/376}. Ce système permettra
+une plus grande flexibilité, sera intégré à Django lui même, possèdera un
+format de migration beaucoup plus lisible, plus facile à rebaser ou à
+fusionner avec d'autres branches et détectera plus de modification de modèle
+automatiquement.
+
+
+\section{virtualenv, pip etc}
+
+Outre Django, une application web a générale d'autres dépendances. Par exemple
+ce travail dépend aussi de l'application \textit{django-south} détaillée plus haut.
+Plus précisément, l'application web dépend de logiciel externe ayant certaine version.
+Par exemple, un site fonctionnant sous Django 1.4 aura besoin de quelques modifications
+pour fonctionner sous Django 1.5 et ne fonctionnera probablement pas du tout sous
+Django 1.6. Pour éviter au développeur de s'arracher les cheveux, l'écosystème Python
+fourni un outil nommé le \textit{virtualenv}.
+
+Un environnement virtuel (\textit{virtualenv}) est une sandbox
+\footnote{https://fr.wikipedia.org/wiki/Sandbox\_\%28s\%C3\%A9curit\%C3\%A9\_informatique\%29}
+permettant d'installer toute une série de bibliothèque pour l'environnement
+local sans perturber le système hote.
+
+exemple d'usage
+
+Pour distribuer et installer facilement une bibliothèque, l'écosystème Python
+possède un logiciel nommé \textit{pip} + example, requirement.txt
+
+
+\section{tour des fonctionalités du projet + screenshot}
+\section{architecture du site genre differente app}
+\section{comment configurer, creer le projet}
+\section{document parser, consumer pattern}
+\section{fonction recherche}
+\section{auth}
+\section{sécurité, CSRF, XSS, injection...}
+\section{css/html testing}
+\section{django testing}
+\section{github push hook et continuous testing}
+\section{conclusion}
+
+\end{document}
