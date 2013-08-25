@@ -10,7 +10,11 @@
 \usepackage{fullpage}
 \usepackage{algorithm2e}
 \usepackage{caption}
+\usepackage{color}
 \usepackage{subcaption}
+\usepackage{fancyvrb}
+\fvset{commandchars=\\\{\}}
+\usepackage[usenames,dvipsnames]{xcolor}
 \frenchbsetup{ReduceListSpacing=false,CompactItemize=false}
 
 \title{Recherches et réalisations relatives à une plateforme de
@@ -326,13 +330,133 @@ possède un logiciel nommé \textit{pip} + example, requirement.txt
 \section{tour des fonctionalités du projet + screenshot}
 \section{architecture du site genre differente app}
 \section{comment configurer, creer le projet}
+
+Un projet Django se configure via un fichier nommé \textit{settings.py},
+présent dans le dossier racine. Ce fichier est au format Python et est principalement
+une suite de définition de variables. Cette section cherche à détailler la majorité
+de celle utile pour le projet.
+
+\begin{description}
+\item[Debug, Debug\_template] Ces variables, de type booléenne, permette d'activer
+      ou d'inhiber l'affichage de commentaire et d'information lorsqu'une erreur
+      intervient sur le site.
+\item[Database] Cette variable stocke les informations sur la base de donnée. Elle
+      permet de spécifier la bibliothèque à employer (sqlite3 pour le développement
+      et postgresql\_psycopg2 pour la production), le nom de la base de donnée, l'utilisateur
+      et le mot de passe à employer.
+\item[Upload\_log] Variable contenant un chemin absolut vers l'endroit où logger
+      les informations du gestionnaire d'upload de document.
+\end{description}
+
 \section{document parser, consumer pattern}
+
+Une fonction utile pour le projet est de fournir aux étudiants la possibilité
+de visionner un PDF directement dans l'interface web au lieu de les obliger
+à le télécharger. Cette fonction est similaire à la visionneuse de document fournie
+par Google Doc. Pour offrir ce service, il est impossible de calculer le rendu du PDF
+à chaque fois que l'étudiant charge la visionneuse, il faut 
+
+
 \section{fonction recherche}
+
+Actuellement, le projet héberge plusieurs centaines de document.
+Afin de permettre à l'utilisateur de trouver un document particulier, une
+fonction de recherche fut implémentée. Tout d'abord, cette section abordera
+la question de précalcul sur les documents présent, ce qui est exécuté lors
+du traitement d'un document lors de son upload. Ensuite, cette section
+détaillera la fonction de calcul du classement des documents en fonction
+d'une certaine requète.
+
+Le traitement des documents évoqués à la section précédente inclue une extraction
+textuel. Au moyen de la bibliothèque \textit{poppler}, il transforme un document
+PDF en une représentation textuelle. Ensuite il extrait les mots de cette représentation
+puis leur racine morphologique grâce à un processus appelé \textit{stemming}
+\footnote{https://en.wikipedia.org/wiki/Stemming}. Enfin, pour tout document,
+il compte le nombre d'occurence de chaque racine ainsi que le nombre total de mot du document.
+Il sauvegarde le tout dans une base de donnée (le tuple : document, racine, nombre).
+
+Le \textit{term frequency–inverse document frequency} (TF-IDF) est un indicateur
+qui reflete l'importance d'un mot dans un document par rapport à son importance
+dans l'ensemble du corpus de document. Il est proportionnel à la fréquence d'un terme
+d'un document par rapport à la fréquence de ce terme dans l'ensemble des documents.
+Par exemple, le verbe "est" est très fréquent dans tout les documents, il aura
+un très faible TF-IDF, probablement constant pour tout les documents,
+alors que le nom "sécurité" aura un TF-IDF beaucoup plus élevé dans un document
+relatif à la sécurité informatique (parce que le terme sera souvent employé)
+par rapport à un document sur les mathématiques discretes (où il ne sera probablement
+pas présent). Cet indicateur est la première manière utilisé pour classer
+un document par rapport à un autre étant donné une requète de recherche.
+
+Ensuite, il est intuitif de ce dire que les documents souvent visité sont
+plus important. Le classement brute fourni par le calcul du TF-IDF est donc raffiné
+par rapport aux nombres de vue et téléchargement des documents.
+
+
 \section{auth}
 \section{sécurité, CSRF, XSS, injection...}
+
+D'une manière générale, les notions de sécurité sont importantes en informatique
+et le domaine du web ne fait pas exception. Une fois déployé en production,
+un site web est suseptible de ce faire attaquer par n'importe qui, il est donc
+important de passer en revue les vulnérabilités les plus populaires et de les prévenir.
+
+Tout d'abord, un premier type de vulnérabilité sont les SQL Injection. Cette attaque
+consiste à déformer une requète SQL hors de son but premier dans le but de détourner
+le résultat de cette requète. Généralement, les requètes contiennent le contenu
+de variable, parfois venant d'entrée utilisateur et ce dernier peut essayer
+de faire "déborder" ces variables pour transformer la sémantique de la requète. Par
+exemple, si un algorithme d'authentification cherche à vérifier que l'utilisateur existe
+et possède le bon mot de passe, il pourrait exécuter la requète si dessous.
+Un utilisateur malveillant pourrait entrer une autre valeur et si l'algorithme
+vérifie le résultat de retour (0 pour l'utilisateur unexistant, 1 pour l'utilisateur
+existant), l'attaquant pourra se logger.
+
+\begin{Verbatim}
+SELECT count(*) FROM users
+  WHERE username = "lama" and password = "secret";
+
+SELECT count(*) FROM users
+  WHERE username = "\textcolor{Blue}{lama" or 1 = 1 LIMIT 1;#}" and password = "";
+\end{Verbatim}
+
+Avec le framework Django, l'ORM est protégé contre les injections SQL à plusieurs
+niveau. D'une part, les valeurs entrées dans les formulaires sont nettoyées avant
+d'être employée dans les fonctions \textit{views} et l'ORM possède un mécanisme
+de sécurité contre tout type d'injection connue.
+
+Ensuite, un autre type d'attaque très populaire est le \textit{cross-site scripting} (XSS).
+Il s'agit d'insérer dans une page un script malicieux, généralement dans du contenu
+produit par l'utilisateur (commentaire sur un forum, nom d'utilisateur sur une page de profile...)
+qui va s'exécuter dans le navigateur des autres clients, pouvant voler des informations.
+
+Pour se protéger de cette attaque, Django nettoye les formulaires des entrées utilisateurs
+comme évoqué précédement, ensuite il empeche du contenu de script ou HTML d'être directement
+rendu dans la page web au niveau du moteur de \textit{template}. Par exemple,
+si le développeur veut afficher le text d'un commentaire, le template pourrait contenir
+\texttt{\{\{ comment \}\}}. Si la variable \textit{comment} contient du HTML,
+il sera transformé en texte, sans pouvoir être interpreté par le navigateur du client.
+
+Enfin, une attaque courante est le concept de \textit{cross site request forgery} (CSRF).
+Cet une attaque un peu plus évoluée que les deux précédentes, impliquant la fabrication
+d'une requète HTTP vers le site 
+
+
 \section{css/html testing}
 \section{django testing}
 \section{github push hook et continuous testing}
+
+Un contrôle de révision de source est un système permettant de garder un historique
+de toutes les versions du code source d'un projet. Il permet de partager les ressources
+entre différent développeur, développer les fonctionnalités isolées entre elle sous
+forme de branche, exécuter plusieurs versions du logiciel... Un système de révision
+de source distribué est un système de révision sans serveur central. Chaque
+utilisateur de ce système possède l'entiereté de l'historique et des informations,
+il n'y a pas de source d'authorité sur le code source.
+
+Ce projet a été développer sous Git, un système de révision de source utilisé notament
+pour le kernel Linux. Il est très puissant et très populaire. Afin de publier le code
+source, le site Github fut employé.
+
 \section{conclusion}
 
 \end{document}
