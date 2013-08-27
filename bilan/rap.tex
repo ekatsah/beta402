@@ -566,27 +566,27 @@ prendre en compte le couplage entre les différents composants, ce qui mène
 
 Dans l'univers Django, une Django-app est un module Python contenant des
 ressources, comme les modèles de ce module, les views, la manière de reconnaitre
-une URL, les templates associés... Chaque module à la même structure : un fichier
+une URL, les templates associés... Chaque module possède la même structure : un fichier
 \texttt{\_\_init\_\_.py} pour indiquer que c'est un module, les fichiers
 \texttt{views.py, models.py} et \texttt{urls.py} pour le fonctionnement du module,
 un fichier optionnel \texttt{test.py} contenant les tests du module, un dossier
 \textit{templates} contenant les fichiers HTML et parfois un dossier \textit{migrations}
-pour la synchronisation avec la base de donnée.
+pour la synchronisation avec la base de données.
 
-Chaque application Django est responsable d'une famille de fonctionnalité du site.
-Généralement ces familles sont construite autour d'un type d'objet. L'application
-représente les cours sous forme de hierarchie : les cours sont agrégé en catégorie,
-ces dernières sont elle même inclue dans d'autres catégories, de manière récursive,
+Chaque application Django est responsable d'une famille de fonctionnalités du site.
+Généralement ces familles sont construites autour d'un type d'objet. L'application
+représente les cours sous forme de hierarchie : les cours sont agrégés en catégories,
+ces dernières sont elles-mêmes inclues dans d'autres catégories, de manière récursive,
 jusqu'à une catégorie nommée "Root". Les cours et les catégories sont donc
-placée dans un arbre. Chaque cours ou catégorie peut être inclue dans plusieurs
+placées dans un arbre. Chaque cours ou catégorie peut être inclue dans plusieurs
 autres catégorie en même temps : par exemple un cours peut être référencé dans
-une catégorie lié à la partie Polytech de l'arbre et dans une catégorie lié à la
+une catégorie lié à la partie Polytechnique de l'arbre et dans une catégorie liée à la
 partie Informatique.
 
 Généralement, l'arbre est divisé de la même manière que l'université : faculté,
 section, année, options. Chaque feuille peut contenir des cours ou des sous-catégories.
-Chaque cours peut contenir des fils de discussion et des documents. Toutes ses
-types d'objets sont géré par les applications suivantes :
+Chaque cours peut contenir des fils de discussion et des documents. Tous ces
+types d'objets sont gérés par les applications suivantes :
 
 \begin{description}
 \item[admin] Application fournissant trois outils d'administration : la gestion
@@ -604,13 +604,13 @@ types d'objets sont géré par les applications suivantes :
    paramètre... L'application contient aussi le processus de traitement des documents
 \item[messages] Application contenant les objets fil de discussion et post, les méthodes
    pour les manipuler (création, édition, suppression, vote)
-\item[notifications] Application gérant le système de création d'évènement. Il existe
-   un objet par type d'évènement mais ces derniers sont tous stocké dans la même
+\item[notifications] Application gérant le système de création d'évènements. Il existe
+   un objet par type d'évènement mais ces derniers sont tous stockés dans la même
    table grâce à un système basé sur des métaclasses. Il existe 4 types d'évènements :
    \textit{Annoucement, ReplyEvent, ThreadEvent} et \textit{UploadEvent}. L'application
    contient aussi le mur de notification et le flux RSS
 \item[search] Application permettant la recherche dans le corpus de document
-\item[upvotes] Application gérant le système de vote des documents et des fil de discussion.
+\item[upvotes] Application gérant le système de vote des documents et des fils de discussion.
    Cette application permet de classer les documents et fils par type à chaque vote
    (par exemple pour un document, il est possible que le publique change son classement
    de "projet" à "ancien projet" avec assez de vote). Elle garde aussi un historique
@@ -626,25 +626,25 @@ types d'objets sont géré par les applications suivantes :
 Un projet Django se configure via un fichier nommé \textit{settings.py},
 présent dans le dossier racine. Ce fichier est au format Python et est principalement
 une suite de définition de variables. Cette section cherche à détailler la majorité
-de celle utile pour le projet.
+de celles utiles pour le projet.
 
 \begin{description}
-\item[Debug, Debug\_template] Ces variables, de type booléenne, permette d'activer
-      ou d'inhiber l'affichage de commentaire et d'information lorsqu'une erreur
+\item[Debug, Debug\_template] Ces variables, de type booléenne, permettent d'activer
+      ou d'inhiber l'affichage de commentaires et d'information lorsqu'une erreur
       intervient sur le site.
-\item[Database] Cette variable stocke les informations sur la base de donnée. Elle
+\item[Database] Cette variable stocke les informations sur la base de données. Elle
       permet de spécifier la bibliothèque à employer (sqlite3 pour le développement
-      et postgresql\_psycopg2 pour la production), le nom de la base de donnée, l'utilisateur
+      et postgresql\_psycopg2 pour la production), le nom de la base de données, l'utilisateur
       et le mot de passe à employer.
-\item[Upload\_log] Variable contenant un chemin absolut vers l'endroit où logger
+\item[Upload\_log] Variable contenant un chemin absolu vers l'endroit où logger
       les informations du gestionnaire d'upload de document.
-\item[Installed\_app] Ce tuple liste toute les applications Django à employer. Il
-      doit contenir toutes les applications interne de Django à activer (par exemple
-      le système de session), les applications de partie tier hors Django (par exemple
-      \textit{south}) ainsi que toutes les applications développé pour la plateforme,
-      détaillées dans la section précédentes
-\item[Template\_dirs] Ce tuple doit contenir tout les chemins d'acces au dossier
-      contenant des \textit{templates} qui ne sont pas lié à des applications Django.
+\item[Installed\_app] Ce tuple liste toutes les applications Django à employer. Il
+      doit contenir toutes les applications internes de Django à activer (par exemple
+      le système de session), les applications de partie tiers hors Django (par exemple
+      \textit{south}) ainsi que toutes les applications développées pour la plateforme,
+      détaillées dans la section précédente.
+\item[Template\_dirs] Ce tuple doit contenir tous les chemins d'accès au dossier
+      contenant des \textit{templates} qui ne sont pas liés à des applications Django.
 \item[Root\_urlconf] Chaine de caractère indiquant le fichier à employer comme
       base pour le résolveur d'URL
 \item[Static\_root, Static\_url] Chaines de caractère contenant les informations
@@ -665,8 +665,8 @@ Cette étape est rendu simple par Django qui supporte par défaut les systèmes
 de localisation\footnote{https://docs.djangoproject.com/en/dev/topics/i18n/translation/}.
 
 Pour traduire la plateforme, la première étape à été de marquer les chaines de
-caractère affichée au client. Grâce à la séparation entre le contenu et la présentation,
-toute les textes affichés aux clients sont dans les \textit{templates}. Cette concentration
+caractères affichées au client. Grâce à la séparation entre le contenu et la présentation,
+tous les textes affichés aux clients sont dans les \textit{templates}. Cette concentration
 a permis de gagner beaucoup de temps.
 
 Pour déclarer un texte à traduire, dans un \textit{template}, il y a deux manières
@@ -674,7 +674,7 @@ de procéder. Si le texte est court, il peut être affiché grâce à la command
 \texttt{\{\% trans "du text" \%\}}. Par contre, si le texte est plus long, inclu des
 éléments HTML ou plus, il faut employer une déclaration par block, intercalé entre
 deux commandes : \texttt{\{\% blocktrans \%\}} et \texttt{\{\% endblocktrans \%\}}.
-Un exemple est disponible si dessous.
+Un exemple est disponible ci-dessous.
 
 \begin{verbatim}
 <h1>{% trans "Hello, " %}{{ username}}</h1>
@@ -690,12 +690,12 @@ par défaut, il va afficher le texte d'origine. Django utilise l'utilitaire GNU
 standard \textit{gettext} pour la traduction.
 
 La seconde étape est d'extraire toutes les chaines de caractères
-marquée dans un fichier de messages (ayant l'extension \textit{.po}).
+marquées dans un fichier de messages (ayant l'extension \textit{.po}).
 Pour ce faire, la commande suivante du
 manager est à exécuter : \texttt{django-admin.py makemessages -l fr}. Cette commande
 regroupe toutes les traductions d'une langue et fourni à Django une association
-entre les chaînes d'origines et les chaînes traduite. Il faut que le traducteur
-complete ce fichier. Une fois cette étape effectuée, il faut compiler
+entre les chaînes d'origines et les chaînes traduites. Il faut que le traducteur
+complète ce fichier. Une fois cette étape effectuée, il faut compiler
 le fichier de traduction au moyen de la commande \texttt{django-admin.py compilemessages}.
 Il faut refaire cette opération à chaque modification du fichier de traduction.
 
