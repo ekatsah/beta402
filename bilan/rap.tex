@@ -80,40 +80,41 @@
 
 \section{Introduction}
 
-Pendant de nombreuse année, les étudiants de l'ULB échangèrent des conseils, truc et astuces,
-document et informations via le forum de discussion nommé CandiULB. Malheureusement, suite
-à plusieurs raisons, ce dernier est tombé en désuétude et vers 2009, mourru completement.
-Différent groupe de personne ont tenté de rémédier à cet état, l'un d'entre eux grâce à ce projet.
+Pendant de nombreuses années, les étudiants de l'ULB échangèrent des conseils, trucs et astuces,
+documents et informations via le forum de discussion nommé CandiULB. Ce dernier est tombé en désuétude et vers 2009,
+fut définitivement abandonné.
+Différents groupes de personnes ont tenté de remettre le partage à l'ordre du jour 
+au travers d'une plateforme adaptée aux besoins des étudiants. Ce projet vise cet idéal.
 
-Durant le courant de l'année académique 2010-2011, une série de spécification ont été écrites,
+Durant le courant de l'année académique 2010-2011, une série de spécifications ont été écrites,
 principalement autour du texte fondateur écrit par Laurent Peuch
 \footnote{http://worlddomination.be/blog/2012/idee-dun-plateforme-dentre-aide-pour-edutiants.html}.
 Durant l'année académique 2011-2012, ce projet fut mis en place, pour culminer en mai 2012
 par la mise en production de la première version de la plateforme étudiante du Cercle Informatique
 \footnote{https://cours.cerkinfo.be}. Ce document est relatif à cette plateforme.
 
-Le but principale de la plateforme est d'offrir aux étudiants un espace pour uploader
-des documents, les téléchargers ou les visionner en ligne. Il propose aussi un espace
-pour discuter des cours et des documents. En plus de ces fonctionnalités de bases,
-le site permet aux utilisateurs t'attribuer des points aux ressources et discussions,
-permettant de les classer entre elles, limitant le travail de modération (les mauvaises
-contributions sont rendue invisibles au lieu d'etre censurée).
+Le but principal de la plateforme est d'offrir aux étudiants un espace pour uploader
+des documents, les télécharger ou les visionner en ligne. Il propose aussi un espace
+pour discuter des cours et des documents. En plus de ces fonctionnalités de base,
+le site permet aux utilisateurs d'attribuer des points aux ressources et discussions,
+permettant de les classer entre-elles, limitant le travail de modération (les mauvaises
+contributions sont rendue invisibles au lieu d'être censurées).
 
-Ce document cherche à couvrir différent aspect de cette plateforme, tout d'abord en
-expliquant les choix réalisé par cette plateforme (section 2) et en présentant
+Ce document cherche à couvrir différents aspects de cette plateforme, tout d'abord en
+expliquant les choix réalisés pour cette plateforme (section 2) et en présentant
 le fonctionnement du \textit{framework} choisi (section3). Il abordera ensuite
-les questions d'interaction avec une base de donnée (section 4) et la manière
-de gérer la synchronisation entre les différentes version des modèles et de
-la base de donnée (section 5). Par après, il s'interessera au projet en lui
-même, avec une explication de la méthode de déploiement (section 6), la
+les questions d'interaction avec une base de données (section 4) et la manière
+de gérer la synchronisation entre les différentes versions des modèles et de
+la base de données (section 5). Par après, il s'intéressera au projet en lui-même,
+avec une explication de la méthode de déploiement (section 6), la
 description des fonctionnalités (section 7) et l'architecture des différents
 composant et la manière de les configurés (section 8 et 9). La suite du
 document détail certains point particulier de la plateforme, comme la traduction (section 10),
 le pré-traitement des documents (section 11), la fonction de recherche (section 12)
 et l'authentification (section 13). Ce document abordera des questions
-plus générale et la manière dont elle sont traitée par la plateforme, comme la
+plus générales et la manière dont elle sont traitées par la plateforme, comme la
 sécurité (section 14) et la validation (section 15). Finalement, ce travail propose aussi
-une manière de travailler en continuous testing (section 16) et concluera
+une manière de travailler en continuous testing (section 16) et conclura
 globalement avec le résultat concret de la plateforme (section 17).
 
 
@@ -126,12 +127,12 @@ fournissant au développeur l'ensemble des bibliothèques, outils et paradigme
 dont il a besoin, lui permettant d'économiser du temps de travail. 
 
 Django fut choisi car il est basé sur un langage étudié à l'ULB et est très populaire.
-Ce logiciel joui d'une grande communuauté de passionné, d'une base de documentation
-correcte et d'un status "production-ready". De plus, il est utilisé notament
-oar la NASA\footnote{http://science.nasa.gov/}, Instagram
+Ce logiciel joui d'une grande communauté de passionnés, d'une base de documentation
+correcte et d'un statut "production-ready". De plus, il est utilisé notamment
+par la NASA\footnote{http://science.nasa.gov/}, Instagram
 \footnote{http://instagram.com/}
 \footnote{http://instagram-engineering.tumblr.com/post/13649370142/what-powers-instagram-hundreds-of-instances-dozens-of}
-ou encore The Onion\footnote{http://www.theonion.com/} pour certains de leurs besoin web.
+ou encore The Onion\footnote{http://www.theonion.com/} pour certains de leurs besoins web.
 
 
 \section{Architecture générale de Django}
@@ -140,30 +141,30 @@ Django est un \textit{framework} web dont le langage principal est Python et
 dont l'architecture applique les principes de séparation des tâches, inspiré du
 modèle MVC. Le but de ce logiciel est de permettre la conception rapide de site
 en fournissant une série d'outils et de techniques au développeur. Par exemple,
-Django rend transparent l'usage d'une base de donnée, standardise la manière
-d'envoyer une page à l'utilisateur, fourni un système de session et d'authentification,
+Django rend transparent l'usage d'une base de données, standardise la manière
+d'envoyer une page à l'utilisateur, fournit un système de session et d'authentification,
 un système de gestion des logs intégrés...
 
 La liste des fonctionnalités offertes par Django est assez longue, il est malheureusement
 impossible d'être exhaustif dans le cadre de ce travail. Les plus importantes
-ou celle spécifiquement employé par le projet seront détaillée dans les sections suivante.
+ou celles spécifiquement employées par le projet seront détaillées dans les sections suivantes.
 
-Le protocole HTTP est un protocole sans état (\textit{stateless}), c'est à dire
+Le protocole HTTP est un protocole sans état (\textit{stateless}), c'est-à-dire
 que le client ou le serveur ne peuvent déterminer l'état de l'application client uniquement
-sur base de la session HTTP. Cela implique qu'il est possible de traiter chaque requète HTTP
-de manière individuelle, sans se soucier de celle qui avait avant ou après. Malheureusement,
+sur base de la session HTTP. Cela implique qu'il est possible de traiter chaque requête HTTP
+de manière individuelle, sans se soucier de celle présente précedemment ou après. Malheureusement,
 pour la majorité des applications il faut aussi mettre en place un mécanisme permettant
 d'identifier le client, de garder certaines propriétés de ce dernier...
 
-Pour chaque requète d'une page web que le client fait au serveur, cette dernière
+Pour chaque requête d'une page web que le client fait au serveur, cette dernière
 va arriver à Django au niveau du résolveur d'URL, première étape sur la figure \ref{fig:mvc}.
 Cette étape permet d'associer une fonction
-à chaque demande du client. Les URLs sont reconnue au moyen d'expressions rationnelles.
+à chaque demande du client. Les URLs sont reconnues au moyen d'expressions rationnelles.
 Par exemple, si le développeur veut deux pages web différentes, l'une affichant
 le résultat de la fonction \textit{page1} à l'adresse \texttt{http://host/path/index/} et
 l'autre affichant le résultat de la fonction \textit{page2} à l'adresse
 \texttt{http://host/path/page2/123/}, 123 étant un ID unique, il pourrait employer
-le reconnaisseur d'URL suivant :
+le résolveur d'URL suivant :
 
 \begin{verbatim}
 urlpatterns = patterns("",
@@ -172,13 +173,13 @@ urlpatterns = patterns("",
 )
 \end{verbatim}
 
-Le résolveur d'URL permet d'extraire certaines partie de l'URL reconnue et de les donnés
-comme argument à la fonction à appeller. Dans l'exemple précédent, la fonction \textit{page2}
+Le résolveur d'URL permet d'extraire certaines parties de l'URL reconnues et de les donner
+comme argument à la fonction à appeler. Dans l'exemple précédent, la fonction \textit{page2}
 sera appelé avec le nombre en fin d'URL en argument.
 
-Cette fonction est appellée la \textit{view}. Cette dernière prend au minimum un paramètre,
-un objet requète. Il contient énormément d'information sur le client, l'url demandé,
-la méthode HTTP employé, des paramètres du serveur... Le rôle de cette fonction
+Cette fonction est appelée la \textit{view}. Cette dernière prend au minimum un paramètre,
+un objet requête. Il contient énormément d'informations sur le client, l'url demandé,
+la méthode HTTP employée, des paramètres du serveur... Le rôle de cette fonction
 est de fabriquer la page web envoyé au client, c'est sa valeur de retour. Pour ce faire,
 la fonction fait usuellement des requètes à la base de donnée en employant des modèles
 d'objet et calcule le rendu de la page en employant le moteur de \textit{template}.
