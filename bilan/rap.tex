@@ -180,8 +180,8 @@ sera appelé avec le nombre en fin d'URL en argument.
 Cette fonction est appelée la \textit{view}. Cette dernière prend au minimum un paramètre,
 un objet requête. Il contient énormément d'informations sur le client, l'url demandé,
 la méthode HTTP employée, des paramètres du serveur... Le rôle de cette fonction
-est de fabriquer la page web envoyé au client, c'est sa valeur de retour. Pour ce faire,
-la fonction fait usuellement des requètes à la base de donnée en employant des modèles
+est de fabriquer la page web envoyée au client, c'est sa valeur de retour. Pour ce faire,
+la fonction fait usuellement des requêtes à la base de données en employant des modèles
 d'objet et calcule le rendu de la page en employant le moteur de \textit{template}.
 
 Par exemple, pour afficher l'index de l'exemple précédent, avec la fonction \textit{page1},
@@ -194,7 +194,7 @@ def page1(request):
                   {"user": request.user.login})
 \end{verbatim}
 
-La fonction \textit{render} est un raccourci permettant d'appeller le moteur
+La fonction \textit{render} est un raccourci permettant d'appeler le moteur
 de rendu de \textit{template}, de lui demander d'employer le fichier \texttt{index.html}
 avec comme paramètre une variable \textit{user} dont la valeur est égale
 au login de l'utilisateur.
@@ -216,52 +216,52 @@ la forme suivante :
 </html>
 \end{verbatim}
 
-Ce fichier va être interpreter par le moteur de rendu et la valeur de la variable
-\textit{user} va être intégré dans le titre de paragraphe de la page. Cette
+Ce fichier va être interprété par le moteur de rendu et la valeur de la variable
+\textit{user} va être intégrée dans le titre de paragraphe de la page. Cette
 technique est très puissante car elle permet de diviser le travail de calcul
 du contenu de la page de sa présentation. Cette approche augmente la lisibilité
-du site web d'un point de vue développeur et permet de scindé les rôles : d'un
+du site web d'un point de vue développeur et permet de scinder les rôles : d'un
 coté le programmeur, qui n'a pas besoin de se préoccuper des questions
-de HTML, CSS et de l'autre le designer, qui n'a dans ce cas si pas
+de HTML, CSS et de l'autre le designer, qui n'a dans ce cas-ci pas
 besoin de connaitre Python ou les bases de données.
 
 Dans Django, le mécanisme de \textit{template} est très évolué : il permet
-de faire des boucles et des conditions, possèdent des dizaines de filtres (par
-exemple mettre le premier mot d'une variable en majuscule ou formatter une date).
-Il permet de faire des architectures complete grâce à l'héritage de pages :
-une section du \textit{template} peut-être utilisé par toutes une série d'autres
+de faire des boucles et des conditions, possède des dizaines de filtres (par
+exemple mettre le premier mot d'une variable en majuscule ou formater une date).
+Il permet de faire des architectures complètes grâce à l'héritage de pages :
+une section du \textit{template} peut-être utilisée par toute une série d'autres
 pages, en spécialisant les parties nécessaires.
 
 \begin{figure}
   \centering\includegraphics[scale=0.8]{imgs/mvc.pdf}
-  \caption{Description du traitement d'une requète d'un client, analysé par
-           le reconnaisseur d'URL, traité par la \textit{view} avec le support
-           d'une base de donnée puis affichée par le moteur de rendu}
+  \caption{Description du traitement d'une requête d'un client, analysée par
+           le résolveur d'URL, traitée par la \textit{view} avec le support
+           d'une base de données puis affichée par le moteur de rendu}
   \label{fig:mvc}
 \end{figure}
 
-Afin de completer cette section, il est important d'aborder les \textit{generic view}.
+Afin de compléter cette section, il est important d'aborder les \textit{generic view}.
 Une vue générique est une fonction fournie par la bibliothèque Django permettant
 d'exécuter des actions simples, "que tout le monde fait". Par exemple, pour lister
-un sous ensemble d'un type d'objet, il suffit d'utiliser cette fonction. Dans
-le cas d'une liste de document relatif à un cours en particulier, le développeur
+un sous-ensemble d'un type d'objet, il suffit d'utiliser cette fonction. Dans
+le cas d'une liste de documents relatifs à un cours en particulier, le développeur
 n'a plus besoin d'écrire une vue particulière. Il peut juste référencer la vue
-générique dans le reconnaisseur d'URL et donner le nom du template à employer
+générique dans le résolveur d'URL et donner le nom du template à employer
 ainsi que quelques paramètres. Ce projet emploie énormément cette méthode. 
 
-Afin de facilité la manipulation d'un projet Django, ce dernier fourni un script
-de controle : le \textit{manager.py}. Ce dernier permet de manipuler la base de
-donnée, créer un \textit{shell} dans l'application, d'exécuter un serveur
+Afin de faciliter la manipulation d'un projet Django, ce dernier fournit un script
+de contrôle : le \textit{manager.py}. Ce dernier permet de manipuler la base de
+données, créer un \textit{shell} dans l'application, d'exécuter un serveur
 web de développement... Les principales commandes sont listées plus bas, le
 script est accessible avec la commande \texttt{./manage.py <nom de commande>}.
 
 \begin{description}
-\item[syncdb] Construit la base de donnée. Ce mode passe en revue tout les modèles
+\item[syncdb] Construit la base de données. Ce mode passe en revue tous les modèles
               disponibles et crée les tables requises. Il ne permet pas de modifier
-              une table existante, ce problème sera abordé dans une section ultérieur.
+              une table existante, ce problème sera abordé dans une section ultérieure.
 \item[shell] Exécute un \textit{shell} avec les variables d'environnement Django
              correctement réglées. Ce dernier permet de faire des opérations de maintenance
-             sur la base de donnée, aider à l'implémentation du code en fournissant
+             sur la base de données, aider à l'implémentation du code en fournissant
              un mode interactif d'exécution...
 \item[runserver] Exécute un serveur web localement, fournissant un environnement
              de test au développeur. Ce mode est absolument pas adapté à un usage en production.
@@ -270,21 +270,21 @@ script est accessible avec la commande \texttt{./manage.py <nom de commande>}.
 \end{description}
 
 
-\section{Interaction avec la base de donnée}
+\section{Interaction avec la base de données}
 
 Un \textit{Object-relational mapping} (ORM) est une technique
-pour convertire des objets en mémoire en enregistrement dans une base de donnée
-relationnelle et inversément. Cette technique est très puissante et permet
-au programmeur de ne plus interagir directement avec la base de donnée, juste
+pour convertir des objets en mémoire en enregistrement dans une base de données
+relationnelle et inversement. Cette technique est très puissante et permet
+au programmeur de ne plus interagir directement avec la base de données, juste
 de manipuler des objets. A ce titre, Django possède un ORM, dont les principales
-caractéristique vont être développée ici.
+caractéristique vont être développées ici.
 
 Comme évoqué dans la section précédente, la fonction \textit{view} a la responsabilité
 du calcul de la page. Souvent cette dernière se base sur des informations présentes
-en base de donnée. Chaque enregistrement de cette dernière, pour être exploitable
-par Django, devra être assortie à un modèle, c'est à dire une \textit{class} Python
+en base de données. Chaque enregistrement de cette dernière, pour être exploitable
+par Django, devra être assortie à un modèle, c'est-à-dire une \textit{class} Python
 ayant une structure compréhensible par Django. Ce dernier créera le type dans la
-base de donnée, y insérera les nouveaux éléments, supprimera ceux qu'il faut...
+base de données, y insérera les nouveaux éléments, supprimera ceux qu'il faut...
 
 Par exemple, dans le cadre de l'application de collaboration, il faudra un objet
 \textit{cours}. Ce dernier représentera un cours, aura un nom, une description,
@@ -304,7 +304,7 @@ class Course(models.Model):
 
 L'ORM de Django permet de manipuler des objets cours grâce à une API simple.
 Il est possible de créer des nouveaux objets en les instanciant, de les
-sauver en base de donner, de lire ou modifier une valeur d'un champs,
+sauver en base de données, de lire ou modifier une valeur d'un champ,
 de les supprimer, comme le monde l'exemple suivant :
 
 \begin{verbatim}
@@ -320,42 +320,42 @@ de les supprimer, comme le monde l'exemple suivant :
 \end{verbatim}
 
 
-\section{Synchronisation entre les modèles et la base de donnée}
+\section{Synchronisation entre les modèles et la base de données}
 
-Comme évoqué précédement, le code décrivant les
-modèle est notament utilisé pour associer les champs des enregistrements
-au propriété des objets. Cette technique permet de ne pas avoir
-à s'occuper d'interagir avec la base de donnée et de s'occuper d'objet uniquement.
+Comme évoqué précédemment, le code décrivant les
+modèles est notamment utilisé pour associer les champs des enregistrements
+aux propriétés des objets. Cette technique permet de ne pas avoir
+à s'occuper d'interagir avec la base de données et de s'occuper d'objets uniquement.
 Malheureusement, au fil de l'évolution du projet, la structure des différents modèles
-est amené à changer : il faut que la structure de la base de donnée évolue avec.
-De cette constation découle plusieurs questions : comment, quoi, qui?
+est amenée à changer : il faut que la structure de la base de données évolue simultanément.
+De cette constatation découle plusieurs questions : comment, quoi, qui?
 
-Ce travail conseil d'employer l'application \textit{django-south}
+Ce travail conseille d'employer l'application \textit{django-south}
 \footnote{http://south.aeracode.org/}. Cette dernière permet de garder l'état d'un modèle
 à différent moment de son développement et à calculer des \textit{deltas} de modèle, équivalent
-à un delta d'un code source dans un système de gestion de version. Ensuite,
+à un delta d'un code source dans un système de gestion de versions. Ensuite,
 à la demande de l'utilisateur, \textit{django-south} applique les \textit{deltas}
-(appellé migrations) sur la base de donnée. Il possède des mécanismes pour les
+(appelées migrations) sur la base de données. Il possède des mécanismes pour les
 appliquer dans l'ordre, ne pas les appliquer plusieurs fois, migrer les
-données en même temps que le régleage de la table, possibilité de faire un rollback
+données en même temps que le réglage de la table, possibilité de faire un rollback
 sur une migration...
 
-Physiquement, les migrations sont stockées dans des fichiers dans un sous dossier
+Physiquement, les migrations sont stockées dans des fichiers dans un sous-dossier
 \textit{migrations} de l'application django. Elle sont sous la forme de fichier
-Python, pouvant être controler avec un système de gestion de version. Une explication
+Python, pouvant être controlées avec un système de gestion de versions. Une explication
 détaillée est disponible sur le site de \textit{djangopro}
 \footnote{http://www.djangopro.com/2011/01/django-database-migration-tool-south-explained/}.
 
 Par exemple, voici une session d'utilisation de l'outil \textit{django-south}.
 Le scénario d'utilisation est le suivant : sur un ordinateur \texttt{(ve)}, le développeur
 ajoute un nouveau modèle \textit{lapin} à l'application \textit{animal}. Ensuite,
-il modifie ce modèle en ajoutant un champs. Par la suite, il copie les différents
-fichiers sur une autre machines possédant déjà une base de donnée. Il convient de
+il modifie ce modèle en ajoutant un champ. Par la suite, il copie les différents
+fichiers sur une autre machine possédant déjà une base de données. Il convient de
 modifier cette dernière pour être synchronisé avec les sources de l'application,
 avec la commance \texttt{migrate}.
 
 \begin{Verbatim}
-\textcolor{Blue}{# Django app "animal", un seul modele : le Lapin, possédant un nom}
+\textcolor{Blue}{# Django app "animal", un seul modèle : le Lapin, possédant un nom}
 (ve) $ cat animal/models.py
 from django.db import models
 
@@ -378,7 +378,7 @@ Running migrations for animal:
  - Loading initial data for animal.
 Installed 0 object(s) from 0 fixture(s)
 
-\textcolor{Blue}{# Modification du modèle, ajout d'un champs, la race du lapin}
+\textcolor{Blue}{# Modification du modèle, ajout d'un champ, la race du lapin}
 (ve) $ cat animal/models.py
 from django.db import models
 
@@ -420,30 +420,30 @@ A l'heure où ces lignes sont écrites, un nouveau système est déployé sur
 les nouvelles version de Django : \textit{Schema alteration}
 \footnote{http://www.kickstarter.com/projects/andrewgodwin/schema-migrations-for-django}
 \footnote{https://github.com/django/django/pull/376}. Ce système permettra
-une plus grande flexibilité, sera intégré à Django lui même, possèdera un
+une plus grande flexibilité, sera intégré à Django lui-même, possèdera un
 format de migration beaucoup plus lisible, plus facile à rebaser ou à
-fusionner avec d'autres branches et détectera plus de modification de modèle
+fusionner avec d'autres branches et détectera plus de modifications de modèle
 automatiquement.
 
 
 \section{Déploiment d'un projet Django}
 
-Outre Django, une application web a générale d'autres dépendances. Par exemple
+Outre Django, une application web a généralement d'autres dépendances. Par exemple
 ce travail dépend aussi de l'application \textit{django-south} détaillée plus haut.
-Plus précisément, l'application web dépend de logiciel externe ayant certaine version.
+Plus précisément, l'application web dépend de logiciel externe ayant certaines versions.
 Par exemple, un site fonctionnant sous Django 1.4 aura besoin de quelques modifications
 pour fonctionner sous Django 1.5 et ne fonctionnera probablement pas du tout sous
 Django 1.6. Pour éviter au développeur de s'arracher les cheveux, l'écosystème Python
-fourni un outil, nommé \textit{virtualenv}.
+fournit un outil, nommé \textit{virtualenv}.
 
 Un environnement virtuel (\textit{virtualenv}) est une sandbox
 \footnote{https://fr.wikipedia.org/wiki/Sandbox\_\%28s\%C3\%A9curit\%C3\%A9\_informatique\%29}
 permettant d'installer toute une série de bibliothèque pour l'environnement
-local sans perturber le système hote. Cela permet d'avoir l'ensemble des dépendances
+local sans perturber le système hôte. Cela permet d'avoir l'ensemble des dépendances
 logiciels à une certaine version localement.
 
 Pour distribuer et installer facilement une bibliothèque, l'écosystème Python
-possède un logiciel nommé \textit{pip}. Ce dernier ce base sur le
+possède un logiciel nommé \textit{pip}. Ce dernier se base sur le
 \textit{Python Package Index} (PyPi), un répertoire de plusieurs centaines de
 paquets Python, disponible à l'installation, avec un système de dépendance.
 Pour automatiser l'installation, il est d'usage d'écrire un fichier, conventionnellement
@@ -478,52 +478,52 @@ $ source ve/bin/activate
 
 \section{Description des fonctionnalités}
 
-La plateforme web est construite autour d'un petit nombre de page web, chaqu'une
-ayant un rôle fonctionnel. Cette section décris ces dernières.
+La plateforme web est construite autour d'un petit nombre de page web, chacune
+ayant un rôle fonctionnel. Cette section décrit ces dernières.
 
-Une fois authentifié, l'utilisateur voit la page d'acceuille. La première fois qu'il
+Une fois authentifié, l'utilisateur voit la page d'acceuil. La première fois qu'il
 utilise le système, un message d'aide est affiché, il peut le masquer par la suite.
-Il est inviter à sélectionner des cours grâce au menu de la barre de navigation,
-qu'il peut choisir de suivre. Les cours suivit sont repris sur la page d'acceuil, ainsi
+Il est invité à sélectionner des cours grâce au menu de la barre de navigation,
+qu'il peut choisir de suivre. Les cours suivis sont repris sur la page d'acceuil, ainsi
 que quelques statistiques à propos de ces cours, comme la dernière activité qu'il y
 a eu dedans. La figure \ref{fig:home} présente la disposition générale de cette page.
 
 Le scénario classique d'utilisation de la plateforme consiste à sélectionner un cours
 et regarder les ressources disponibles pour ce dernier. Cette page est présentée en
 figure \ref{fig:course}. Cette page permet à l'utilisateur de voir une liste de documents
-jugé interessant pour ce cours ainsi qu'une liste de fil de discussion lié à ce cours.
-C'est aussi sur cette page qu'il peut décider de suivre ou d'arreter de suivre un cours.
+jugé intéressants pour ce cours ainsi qu'une liste de fil de discussion liée à ce cours.
+C'est aussi sur cette page qu'il peut décider de suivre ou d'arrêter de suivre un cours.
 Via cette page, l'étudiant peut uploader un nouveau document, voter pour les documents
-qu'il juge interessant ou les fils de discussion important.
+qu'il juge intéressant ou les fils de discussion importants.
 
-S'il choisi de cliquer sur un document, une visionneuse de document lui est proposé.
+S'il choisi de cliquer sur un document, une visionneuse de document lui est proposée.
 Cette page, présentée en figure \ref{fig:viewer}, affiche le rendu de chaque page
-du document PDF ainsi qu'une liste de miniature pour facilité la navigation. Il
+du document PDF ainsi qu'une liste de miniature pour faciliter la navigation. Il
 est possible de zoomer et de télécharger le document à partir de cette page. En
 dessous de chaque page du document PDF, ainsi que sur l'ensemble du document, il
 est possible de laisser un commentaire, pour initier un nouveau fil de discussion.
 
-Ces différents commentaires sont tous affichable avec la page forum. Chaque page
-est une suite de commentaires, par différents auteur, auquel il est possible
+Ces différents commentaires sont tous affichables avec la page forum. Chaque page
+est une suite de commentaires, par différents auteurs, auquel il est possible
 de répondre. Chaque fils de discussion est lié à une ressource, un cours, un
 document ou à une page d'un document. Par exemple, si la page 2 d'un document
 est commenté, le fil de discussion apparaitra dans les fils de discussion
 relatif à la page, au document et au cours. Par contre, si l'utilisateur
 poste un commentaire relatif à tout le cours, il ne sera listé que sur la page
-du cours. Il est possible de mettre en page les différents commentaires avec la syntax
+du cours. Il est possible de mettre en page les différents commentaires avec la syntaxe
 \textit{markdown}, une approche très populaire sur internet.
 
 Outre ses fonctions principales, le site possède un \textit{wall}, un mur
-de notification. A chaque fois qu'un évènement se produit, c'est à dire
-si quelqu'un upload un nouveau document, poste un nouveau commentaire ou répond
-dans un fils de discussion, une notification est ajoutée au mur. Ce mur possède
+de notification. A chaque fois qu'un évènement se produit, c'est-à-dire
+si quelqu'un uploade un nouveau document, poste un nouveau commentaire ou répond
+dans un fil de discussion, une notification est ajoutée au mur. Ce mur possède
 une page RSS qu'il est possible d'ajouter à son lecteur de flux préféré.
 
-De plus, le site contient une fonction recherche de document (détailé dans une
-section ultérieur), une interface administrateur qui permet d'éditer les permissions
+De plus, le site contient une fonction recherche de document (détaillée dans une
+section ultérieure), une interface administrateur qui permet d'éditer les permissions
 des utilisateurs, la structure des catégories et des cours et de gérer les documents.
 Finalement, deux forums sont mis à la disposition des étudiants pour poster
-des commentaires relatifs aux problèmes qu'ils rencontre ou pour faire des sugesstions.
+des commentaires relatifs aux problèmes qu'ils rencontrent ou pour faire des suggestions.
 
 \begin{figure}
   \centering\includegraphics[scale=0.5]{imgs/home.pdf}
@@ -559,7 +559,7 @@ des commentaires relatifs aux problèmes qu'ils rencontre ou pour faire des suge
 \section{Architecture des différents composants}
 
 Cette section détaille la manière dont le projet est découpé en différent
-composant. Cette modularité permet de prendre en main le projet plus facilement
+composants. Cette modularité permet de prendre en main le projet plus facilement
 et de simplifier la maintenance. De plus, il oblige le développeur à
 prendre en compte le couplage entre les différents composants, ce qui mène
 à des logiciels moins complexes.
