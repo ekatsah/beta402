@@ -802,47 +802,47 @@ de programmation, base de données, informatique fondamentale, etc, comme le mon
 \section{Authentification des utilisateurs}
 
 Une spécification du projet était de pouvoir garantir que seuls les étudiants de l'ULB
-pouvait accéder aux ressources offertes par ce site, principalement pour des raisons
-de propriété intellectuelle et parce que certains professeur sont rétissant à 
+pouvaient accéder aux ressources offertes par ce site, principalement pour des raisons
+de propriété intellectuelle et parce que certains professeur sont réticents à 
 ce que des éléments extérieurs puissent télécharger des cours. De plus, afin
-de ne pas pousser les étudiants à s'autocensurer, il a été décidé que seul ces derniers
-pourraient employer les forums de discussion, sans interférence extérieur.
+de ne pas pousser les étudiants à s'autocensurer, il a été décidé que seuls ces derniers
+pourraient employer les forums de discussion, sans interférence extérieure.
 
 Dans ce cadre, une réflexion sur la manière d'authentifier les étudiants
-a été lancé. Pousser les étudiants à devoir s'inscrire sur le site, en faisant des
+a été lancée. Pousser les étudiants à devoir s'inscrire sur le site, en faisant des
 vérification sur leur identité était couteux comme mécanisme, il a été décidé
-d'employer le système d'authentification de l'ULB. Ce système à comme avantages :
+d'employer le système d'authentification de l'ULB. Ce système a comme avantages :
 \begin{itemize}
 \item l'utilisateur n'a pas besoin d'un login et mot de passe supplémentaire
-\item le système sait précisément s'il a affaire à un étudiant de l'ULB ou pas
+\item le système connait avec précision si l'étudiant est ou non de l'ULB
 \item le système possède des informations comme la section de l'étudiant ou
-      l'année dans laquel il étudie.
+      l'année dans laquelle il étudie.
 \item le système ne prend pas de responsabilité au niveau de stockage de mot de passe
 \end{itemize}
 
-Cette approche présente aussi deux défauts majeure : il est dépendant du système
-d'authentification de l'ULB, si celui si est en panne, les étudiants ne savent plus
+Cette approche présente aussi deux défauts majeurs : il est dépendant du système
+d'authentification de l'ULB, si celui-ci est en panne, les étudiants ne peuvent plus
 accéder au site. Ensuite, il est très difficile de faire des exceptions à ce comportement,
 par exemple pour des étudiants ayant des problèmes d'inscription les ressources
-sont indisponible tant que le service inscription n'a pas réglé le problème.
+sont indisponibles tant que le service inscription n'a pas réglé le problème.
 
 En pratique, le système d'authentification est relativement simple. Comme le montre
-le diagrame en figure \ref{fig:auth}, une fois que le client a demandé une
+le diagramme en figure \ref{fig:auth}, une fois que le client a demandé une
 authentification au site de partage de cours, il est redirigé vers la page d'authentification
-de l'intranet de l'ULB. Ce dernier fournis un formulaire classique de demande de
+de l'intranet de l'ULB. Ce dernier fournit un formulaire classique de demande de
 NetID et de mot de passe. S'il est valide et que l'utilisateur a le droit d'employer
 l'application (s'il est étudiant), il est redirigé vers la page d'authentification
 interne du projet, avec deux paramètres : UID et SID. L'\textit{user ID} (UID) est
 un identifiant d'utilisateur et le \textit{session ID} est l'identifiant de session.
-Ces deux paramètres sont transmis à P402, par le client, via la redirection de l'authentificateur
-de l'ULB. Ces paramètres vont être utilisé par la plateforme pour faire
-une requète à l'authentificateur de l'ULB pour en vérifier la validité et télécharger
-les informations lié à cet utilisateur. Une fois validé, la page index est présenté à
+Ces deux paramètres sont transmis à la plateforme, par le client, via la redirection de l'authentificateur
+de l'ULB. Ces paramètres vont être utilisés par la plateforme pour faire
+une requête à l'authentificateur de l'ULB pour en vérifier la validité et télécharger
+les informations liées à cet utilisateur. Une fois validé, la page index est présentée à
 l'utilisateur.
 
 \begin{figure}
   \centering\includegraphics[scale=0.9]{imgs/auth.pdf}
-  \caption{Diagrame des connections entre le client, la plateforme et l'authentificateur
+  \caption{Diagramme des connections entre le client, la plateforme et l'authentificateur
 de l'ULB lors d'une authentification réussie}
   \label{fig:auth}
 \end{figure}
@@ -851,19 +851,19 @@ de l'ULB lors d'une authentification réussie}
 
 D'une manière générale, les notions de sécurité sont importantes en informatique
 et le domaine du web ne fait pas exception. Une fois déployé en production,
-un site web est suseptible de ce faire attaquer par n'importe qui, il est donc
+un site web est susceptible de se faire attaquer par n'importe qui, il est donc
 important de passer en revue les vulnérabilités les plus populaires et de les prévenir.
 
 Tout d'abord, un premier type de vulnérabilité sont les SQL Injection. Cette attaque
-consiste à déformer une requète SQL hors de son but premier dans le but de détourner
-le résultat de cette requète. Généralement, les requètes contiennent le contenu
+consiste à déformer une requète SQL  de son but premier dans le but de détourner
+le résultat de cette requête. Généralement, les requêtes contiennent le contenu
 de variable, parfois venant d'entrée utilisateur et ce dernier peut essayer
-de faire "déborder" ces variables pour transformer la sémantique de la requète. Par
+de faire "déborder" ces variables pour transformer la sémantique de la requête. Par
 exemple, si un algorithme d'authentification cherche à vérifier que l'utilisateur existe
-et possède le bon mot de passe, il pourrait exécuter la requète si dessous.
+et possède le bon mot de passe, il pourrait exécuter la requête ci-dessous.
 Un utilisateur malveillant pourrait entrer une autre valeur et si l'algorithme
-vérifie le résultat de retour (0 pour l'utilisateur unexistant, 1 pour l'utilisateur
-existant), l'attaquant pourra se logger.
+vérifie le résultat de retour (0 pour l'utilisateur inexistant, 1 pour l'utilisateur
+existant), l'attaquant pourra se logger.	
 
 \begin{Verbatim}
 SELECT count(*) FROM users
@@ -874,37 +874,37 @@ SELECT count(*) FROM users
 \end{Verbatim}
 
 Avec le framework Django, l'ORM est protégé contre les injections SQL à plusieurs
-niveau. D'une part, les valeurs entrées dans les formulaires sont nettoyées avant
-d'être employée dans les fonctions \textit{views} et l'ORM possède un mécanisme
+niveaux. D'une part, les valeurs entrées dans les formulaires sont nettoyées avant
+d'être employées dans les fonctions \textit{views} et l'ORM possède un mécanisme
 de sécurité contre tout type d'injection connue.
 
 Ensuite, un autre type d'attaque très populaire est le \textit{cross-site scripting} (XSS).
 Il s'agit d'insérer dans une page un script malicieux, généralement dans du contenu
-produit par l'utilisateur (commentaire sur un forum, nom d'utilisateur sur une page de profile...)
+produit par l'utilisateur (commentaire sur un forum, nom d'utilisateur sur une page de profil...)
 qui va s'exécuter dans le navigateur des autres clients, pouvant voler des informations.
 
-Pour se protéger de cette attaque, Django nettoye les formulaires des entrées utilisateurs
-comme évoqué précédement, ensuite il empeche du contenu de script ou HTML d'être directement
+Pour se protéger de cette attaque, Django nettoie les formulaires des entrées utilisateurs
+comme évoqué précédemment, ensuite il empêche du contenu de script ou HTML d'être directement
 rendu dans la page web au niveau du moteur de \textit{template}. Par exemple,
-si le développeur veut afficher le text d'un commentaire, le template pourrait contenir
+si le développeur veut afficher le texte d'un commentaire, le template pourrait contenir
 \texttt{\{\{ comment \}\}}. Si la variable \textit{comment} contient du HTML,
-il sera transformé en texte, sans pouvoir être interpreté par le navigateur du client.
+il sera transformé en texte, sans pouvoir être interprété par le navigateur du client.
 
 Enfin, une attaque courante est le concept de \textit{cross site request forgery} (CSRF).
-Cet une attaque un peu plus évoluée que les deux précédentes, impliquant la fabrication
-d'une requète HTTP vers le site venant d'un site malveillant. Cette requète est généralement
-une requète de type POST, exécutant quelque chose. Si l'utilisateur est loggué sur le site,
-cette requète pourrait avoir un réel impact.
+C'est une attaque un peu plus évoluée que les deux précédentes, impliquant la fabrication
+d'une requête HTTP vers le site venant d'un site malveillant. Cette requête est généralement
+une requête de type POST, exécutant quelque chose. Si l'utilisateur est loggué sur le site,
+cette requête pourrait avoir un réel impact.
 
-La manière de se protéger de cette attaque est très simple. Le formulaire générant la
-requète contient un numéro unique et ce numéro est aussi stocké dans un cookie présent
+Il est trivial de se protéger contre cette attaque. Le formulaire générant la
+requête contient un numéro unique et ce numéro est aussi stocké dans un cookie présent
 dans le navigateur du client. Seul quelqu'un pouvant lire ou régler ce cookie pourra
 fabriquer un formulaire que Django acceptera. Si la sécurité du navigateur du client
-est correcte, c'est à dire qu'un site tier ne peut lire ou modifier les cookies d'un
-autre site, alors seul les requètes venant de la plateforme seront acceptées.
+est correcte, c'est-à-dire qu'un site tiers ne peut lire ou modifier les cookies d'un
+autre site, alors seules les requêtes venant de la plateforme seront acceptées.
 
 De nouvelles attaques sont publiées régulièrement. Un aspect de la sécurité de la plateforme
-est aussi de la maintenir à jour, en suivant les publications de nouvelle version
+est aussi de la maintenir à jour, en suivant les publications de nouvelles versions
 et de bulletin de vulnérabilité.
 
 
@@ -912,23 +912,23 @@ et de bulletin de vulnérabilité.
 
 Une partie importante du travail d'un développeur est de s'assurer que l'application
 fonctionne correctement. Pour une plateforme web, cette tâche est particulièrement
-compliquée. Cette section cherche à couvrir les solutions envisager dans le cadre
+compliquée. Cette section cherche à couvrir les solutions envisagées dans le cadre
 de ce projet.
 
-D'une manière générale, les tests doivent être écrit avec la bibliothèque
+D'une manière générale, les tests doivent être écrits avec la bibliothèque
 \textit{unitest2}. Pour lancer la suite de tests, il faut exécuter la commande
 \texttt{./manage.py test}. L'étape la plus compliquée du processus est de créer
-une "fausse" base de donnée, utilisée par tout les tests. Malheureusement, suite
+une "fausse" base de données, utilisée par tous les tests. Malheureusement, suite
 à la mise en production de la plateforme et à l'usage de Django-south, la création de cette
-base de donnée est très compliquées et la suite de tests n'a pas été portée au nouveau
-schéma de base de donnée. Ils ne sont pas inclus dans la version de la plateforme
+base de données est très compliquée et la suite de tests n'a pas été adaptée au nouveau
+schéma de base de données. Ils ne sont pas inclus dans la version de la plateforme
 actuellement en production, mais les commentaires de cette section restent cependant
 valides.
 
-La manière d'écrire un test est relativement simple : il faut ajouter une classe
-Test par application puis faire une série de méthode pour chaque aspect testés.
-Par exemple, pour l'application utilisateur, il pourrait être util de vérifier
-si la suppression du message d'acceuil fonctionne.
+La technique utilisée pour écrire un test est relativement simple : il faut ajouter une classe
+Test par application puis faire une série de méthodes pour chaque aspect testé.
+Par exemple, pour l'application utilisateur, il pourrait être utile de vérifier
+si la suppression du message d'accueil fonctionne.
 Le développeur pourrait employer le test suivant :
 
 \begin{verbatim}
@@ -942,53 +942,53 @@ class SimpleTest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 \end{verbatim}
 
-De cette manière, la fonction en question est appellée et le test vérifie qu'elle
+De cette manière, la fonction en question est appelée et le test vérifie qu'elle
 retourne un résultat acceptable. Malheureusement, elle ne vérifie pas si elle a fonctionné,
-pour ça, il faudrait vérifier si le message est bien masqué. Le développeur pourrait
+pour cela, il faudrait vérifier si le message est bien masqué. Le développeur pourrait
 employer l'assertion \texttt{self.assertNotContains(response, "un morceau du message")}.
 
 Le résultat de la plateforme est une série de page web. Afin de vérifier la constance
-dans l'affichage des pages, le développeur pourra être interessé par l'outil Wraith,
+dans l'affichage des pages, le développeur pourra être intéressé par l'outil Wraith,
 développé par la BBC\footnote{https://github.com/BBC-News/wraith}. Ce dernier
 permet de faire un rendu de la page web et le comparer avec les précédentes versions
-des rendus, permettant de détecter des changements. C'est interessant pour les
-questions de CSS notament.
+des rendus, permettant de détecter des changements. C'est intéressant pour les
+questions de CSS notamment.
 
 
 \section{Continuous testing et Github}
 
 Un contrôle de révision de source est un système permettant de garder un historique
 de toutes les versions du code source d'un projet. Il permet de partager les ressources
-entre différent développeur, développer les fonctionnalités isolées entre elle sous
+entre différents développeurs, développer les fonctionnalités isolées entre-elles sous
 forme de branche, exécuter plusieurs versions du logiciel... Un système de révision
 de source distribué est un système de révision sans serveur central. Chaque
-utilisateur de ce système possède l'entiereté de l'historique et des informations,
-il n'y a pas de source d'authorité sur le code source.
+utilisateur de ce système possède l'entièreté de l'historique et des informations,
+il n'y a pas de source d'autorité sur le code source.
 
-Ce projet a été développer sous Git, un système de révision de source utilisé notament
+Ce projet a été développé sous Git, un système de révision de source utilisé notamment
 pour le kernel Linux. Il est très puissant et très populaire. Afin de publier le code
 source, le site Github fut employé.
 
 Git permet aux développeurs de créer des branches. Ces dernières sont une suite de
-contribution aux sources (commit) partant d'un état commun. Par défaut, il existe
-au moins une branche, nommée \textit{master}, qui est employé dans ce projet
-pour symboliser une version prete pour la production.
+contributions aux sources (commit) partant d'un état commun. Par défaut, il existe
+au moins une branche, nommée \textit{master}, qui est employée dans ce projet
+pour symboliser une version prête pour la production.
 
-La méthode de travail employée a été de développer certaines fonctionalités en branche
-distincte de \textit{master}, de tester ses branches puis de l'incorporer dans
+La méthode de travail employée a été de développer certaines fonctionnalités en branches
+distinctes de \textit{master}, de tester ces branches puis de les incorporer dans
 le tronc principal. Une fois que ce dernier était mis à jour, il fallait mettre en
 place la nouvelle version en production. Pour ce faire, le concept de \textit{git hook}
-a été employé : il est possible de générer un signal après certains type d'évènement.
-Dans ce cas si, après le \textit{push} d'une nouvelle version sur le dossier Github,
+a été employé : il est possible de générer un signal après certains types d'évènements.
+Dans ce cas-ci, après le \textit{push} d'une nouvelle version sur le dossier Github,
 le serveur était mis au courant de l'évènement et téléchargeait la nouvelle version (avec
 \textit{git pull}).
 
-Afin de pouvoir mettre en production des versions expérimentale, le serveur a été
+Afin de pouvoir mettre en production des versions expérimentales, le serveur a été
 modifié pour pouvoir créer dynamiquement des \textit{vhosts} (il suffit d'ajouter un
 fichier de configuration type dans le dossier \texttt{vhost.enabled} puis de le redémarrer).
 Ensuite, à chaque \textit{git push} sur Github, si la chose poussée était une
 branche commençant par le texte \texttt{vhost\_}, un nouveau \textit{vhost} était créé avec
-le contenu de la branche et une copie de la base de donnée de production.
+le contenu de la branche et une copie de la base de données de production.
 De cette manière, la version expérimentale pouvait être essayée avant de la
 fusionner avec le tronc commun. Cette approche est détaillée par la figure \ref{fig:git}.
 Le \textit{continuous testing} peut être implémenté sur ce mode de fonctionnement : avant
@@ -998,33 +998,33 @@ la plateforme.
 
 \begin{figure}
   \centering\includegraphics[scale=0.9]{imgs/git.pdf}
-  \caption{Diagrame présentant l'approche employée pour développer par fonctionnalité
-           et faire des testes proches de l'environnement de production}
+  \caption{Diagramme présentant l'approche employée pour développer par fonctionnalités
+           et faire des tests proches de l'environnement de production}
   \label{fig:git}
 \end{figure}
 
 
 \section{Conclusion}
 
-Ce document cherche à présenter globalement la plateforme étudiant déployé par le
+Ce document cherche à présenter globalement la plateforme étudiant déployée par le
 Cercle Informatique. Cette plateforme cherche à répondre au besoin qu'ont les étudiants
-à partager des documents relatif aux cours, entre eux. A ce titre, c'est un succès :
-la plateforme a été employé par plus de 600 étudiants sur l'année, depuis sa mise en
+de partager des documents relatifs aux cours, entre eux. A ce titre, c'est un succès :
+la plateforme a été employée par plus de 600 étudiants sur l'année, depuis sa mise en
 service en mai 2012. Elle possède plus de 1400 documents consultables en ligne ou
-téléchargeable.
+téléchargeables.
 
-Grâce son authentification basée sur le NetID de l'ULB, elle est accessible à tout étudiants,
-bien que pour l'instant les seuls cours intégré sur la plateforme sont
+Grâce son authentification basée sur le NetID de l'ULB, elle est accessible à tous les étudiants,
+bien que pour l'instant les seuls cours intégrés sur la plateforme soient
 les cours d'informatique, de physique et de math de la faculté des sciences ainsi
-que l'ensemble des cours de premier bachelier de la faculté de sciences appliqués.
-Les autres cours n'ont pas été intégré principalement parce que d'autres plateformes
+que l'ensemble des cours de premier bachelier de la faculté de sciences appliquées.
+Les autres cours n'ont pas été intégrés principalement car d'autres plateformes
 répondaient déjà à ce besoin.
 
 D'un point de vue personnel, ce projet fut le premier d'une longue série de réalisation
-assez grande sous Django. Bien qu'il possède certaines erreurs de jeunesses, c'est grâce
-à ce projet que je me suis rendu compte qu'il est possible de réaliser des sites
+assez importantes sous Django. Bien qu'il possède certaines erreurs de jeunesses, c'est grâce
+à ce projet que j'ai réalisé qu'il était possible de créer des sites
 web complexes beaucoup plus rapidement qu'une approche \textit{from scratch} en PHP.
-J'ai évidenement appris énormément d'un point de vue technique mais aussi d'un
-point de vue de gestion de projet, ces compétences me sont actuellement util tout les jours.
+J'ai évidement appris énormément d'un point de vue technique mais aussi d'un
+point de vue de gestion de projet et de communauté, ces compétences me sont actuellement utiles tous les jours.
 
 \end{document}
