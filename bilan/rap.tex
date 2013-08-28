@@ -639,7 +639,7 @@ une suite de définition de variables. Cette section cherche à détailler la ma
 de celles utiles pour le projet.
 
 \begin{description}
-\item[Debug, Debug\_template] Ces variables, de type booléenne, permettent d'activer
+\item[Debug, Debug\_template] Ces variables, de type booléennes, permettent d'activer
       ou d'inhiber l'affichage de commentaires et d'information lorsqu'une erreur
       intervient sur le site.
 \item[Database] Cette variable stocke les informations sur la base de données. Elle
@@ -670,7 +670,8 @@ de celles utiles pour le projet.
 
 \section{Traduction du site}
 
-La plateforme étudiante est actuellement traduite en deux langues : anglais et français.
+Afin d'être accessible à un maximum d'étudiants, la plateforme étudiante est actuellement traduite
+en deux langues : anglais et français.
 Cette étape est rendue simple par Django qui supporte par défaut les systèmes
 de localisation\footnote{https://docs.djangoproject.com/en/dev/topics/i18n/translation/}.
 
@@ -694,8 +695,8 @@ Un exemple est disponible ci-dessous.
 {% endblocktrans %}
 \end{verbatim}
 
-Grâce à ces marqueurs, Django sait exactement ce qu'il faut traduire dans le site.
-Malheureusement, à ce stade il ne sait pas comment le traduire. Dans ce cas-là,
+Grâce à ces marqueurs, Django connait exactement ce qu'il faut traduire dans le site.
+Malheureusement, à ce stade il ne ignore comment le traduire. Dans ce cas-là,
 par défaut, il va afficher le texte d'origine. Django utilise l'utilitaire GNU
 standard \textit{gettext} pour la traduction.
 
@@ -704,10 +705,10 @@ marquées dans un fichier de messages (ayant l'extension \textit{.po}).
 Pour ce faire, la commande suivante du
 manager est à exécuter : \texttt{django-admin.py makemessages -l fr}. Cette commande
 regroupe toutes les traductions d'une langue et fournit à Django une association
-entre les chaînes d'origines et les chaînes traduites. Il faut que le traducteur
-complète ce fichier. Une fois cette étape effectuée, il faut compiler
-le fichier de traduction au moyen de la commande \texttt{django-admin.py compilemessages}.
-Il faut refaire cette opération à chaque modification du fichier de traduction.
+entre les chaînes d'origines et les chaînes traduites. Il importe alors que le traducteur
+complète ce fichier. Une fois cette étape effectuée, le fichier de traduction 
+doit être compilé au moyen de la commande \texttt{django-admin.py compilemessages}.
+Cette opération doit être réitérée à chaque modification du fichier de traduction.
 
 Pour que le site puisse fournir au client la langue de son choix, il faut inclure
 un sélecteur de langue. Par exemple, dans un \textit{template}, il suffira d'ajouter
@@ -746,15 +747,15 @@ de mégabytes de RAM pour traiter un document de plus de 200 pages. Il faut
 donc que cette application puisse lancer un traitement dès qu'un document arrive
 mais ne pas lancer trop de traitement en parallèle : un mécanisme asynchrone est requis.
 Pour l'implémenter, il a été décidé de doter le modèle d'un document d'une propriété,
-le statut, pour indiquer où en est le traitement : il peut être \textit{pending}, c'est-à-dire
+le statut, pour indiquer où en est le traitement. Trois statut différents existent :  \textit{pending}, c'est-à-dire
 que l'utilisateur vient de l'uploader mais que le traitement n'a pas encore commencé,
 \textit{inprocess}, c'est-à-dire en cours de traitement et \textit{done} quand il est terminé.
 
 Afin d'accélérer le processus, il est possible de spécifier un certain
-nombre de traitements faisables en parallèle : la boucle principale du \textit{processing-daemon}
+nombre de traitements réalisables en parallèle : la boucle principale du \textit{processing-daemon}
 est donc une série de \texttt{fork} et de \texttt{wait} : chaque enfant pourra exécuter un traitement.
 Toutes les 10 secondes, le \textit{processing-daemon} va exécuter une requête à la base
-de données pour savoir combien de documents il y a traiter. S'il y a eu, il va les confier
+de données pour savoir combien de documents il y a à traiter. S'il y en a, il va les confier
 à ses enfants, dans la limite disponible, et modifier le statut du document.
 
 Le rôle principal de chaque enfant est d'extraire de chaque document une série
@@ -768,7 +769,7 @@ images qu'il emploiera au mieux, en fonction du zoom utilisateur courant.
 
 En plus de l'extraction d'images, le \textit{processing-daemon} extrait les mots
 du PDF pour la fonction recherche (voir section sur la fonction recherche) ainsi que
-plusieurs statistiques comme la hauteur de chaque page, le nombre de page...
+plusieurs statistiques comme la hauteur de chaque page, le nombre de pages...
 
 
 \section{Fonction de recherche}
@@ -776,7 +777,7 @@ plusieurs statistiques comme la hauteur de chaque page, le nombre de page...
 Actuellement, le projet héberge plusieurs centaines de documents (1440 à l'heure où ces lignes sont écrites).
 Afin de permettre à l'utilisateur de trouver un document particulier, une
 fonction de recherche fut implémentée. Tout d'abord, cette section abordera
-la question de précalcul sur les documents présent, ce qui est exécuté lors
+la question de précalcul sur les documents présents, exécutée lors
 du traitement d'un document lors de son upload. Ensuite, cette section
 détaillera la fonction de calcul du classement des documents en fonction
 d'une certaine requête.
@@ -821,7 +822,7 @@ pourraient employer les forums de discussion, sans interférence extérieure.
 
 Dans ce cadre, une réflexion sur la manière d'authentifier les étudiants
 a été lancée. Pousser les étudiants à devoir s'inscrire sur le site, en faisant des
-vérification sur leur identité était couteux comme mécanisme, il a été décidé
+vérifications sur leur identité était un mécanisme couteux, c'est pourquoi il a été décidé
 d'employer le système d'authentification de l'ULB. Ce système a comme avantages :
 \begin{itemize}
 \item l'utilisateur n'a pas besoin d'un login et mot de passe supplémentaire
@@ -832,9 +833,9 @@ d'employer le système d'authentification de l'ULB. Ce système a comme avantage
 \end{itemize}
 
 Cette approche présente aussi deux défauts majeurs : il est dépendant du système
-d'authentification de l'ULB, si celui-ci est en panne, les étudiants ne peuvent plus
+d'authentification de l'ULB. si celui-ci est en panne, les étudiants ne peuvent plus
 accéder au site. Ensuite, il est très difficile de faire des exceptions à ce comportement,
-par exemple pour des étudiants ayant des problèmes d'inscription les ressources
+par exemple pour des étudiants ayant des problèmes d'inscription? les ressources
 sont indisponibles tant que le service inscription n'a pas réglé le problème.
 
 En pratique, le système d'authentification est relativement simple. Comme le montre
@@ -865,8 +866,8 @@ et le domaine du web ne fait pas exception. Une fois déployé en production,
 un site web est susceptible de se faire attaquer par n'importe qui, il est donc
 important de passer en revue les vulnérabilités les plus populaires et de les prévenir.
 
-Tout d'abord, un premier type de vulnérabilité sont les SQL Injection. Cette attaque
-consiste à déformer une requète SQL  de son but premier dans le but de détourner
+Tout d'abord, un premier type de vulnérabilité est le concept de SQL Injection. Cette attaque
+consiste à déformer une requète SQL de son but premier dans le but de détourner
 le résultat de cette requête. Généralement, les requêtes contiennent le contenu
 de variable, parfois venant d'entrée utilisateur et ce dernier peut essayer
 de faire "déborder" ces variables pour transformer la sémantique de la requête. Par
@@ -889,7 +890,7 @@ niveaux. D'une part, les valeurs entrées dans les formulaires sont nettoyées a
 d'être employées dans les fonctions \textit{views} et l'ORM possède un mécanisme
 de sécurité contre tout type d'injection connue.
 
-Ensuite, un autre type d'attaque très populaire est le \textit{cross-site scripting} (XSS).
+Un autre type d'attaque très populaire est le \textit{cross-site scripting} (XSS).
 Il s'agit d'insérer dans une page un script malicieux, généralement dans du contenu
 produit par l'utilisateur (commentaire sur un forum, nom d'utilisateur sur une page de profil...)
 qui va s'exécuter dans le navigateur des autres clients, pouvant voler des informations.
@@ -971,7 +972,7 @@ questions de CSS notamment.
 Un contrôle de révision de source est un système permettant de garder un historique
 de toutes les versions du code source d'un projet. Il permet de partager les ressources
 entre différents développeurs, développer les fonctionnalités isolées entre-elles sous
-forme de branche, exécuter plusieurs versions du logiciel... Un système de révision
+forme de branches, exécuter plusieurs versions du logiciel... Un système de révision
 de source distribué est un système de révision sans serveur central. Chaque
 utilisateur de ce système possède l'entièreté de l'historique et des informations,
 il n'y a pas de source d'autorité sur le code source.
@@ -1017,25 +1018,37 @@ la plateforme.
 
 \section{Conclusion}
 
-Ce document cherche à présenter globalement la plateforme étudiant déployée par le
-Cercle Informatique. Cette plateforme cherche à répondre au besoin qu'ont les étudiants
-de partager des documents relatifs aux cours, entre eux. A ce titre, c'est un succès :
-la plateforme a été employée par plus de 600 étudiants sur l'année, depuis sa mise en
-service en mai 2012. Elle possède plus de 1400 documents consultables en ligne ou
-téléchargeables.
+Ce document présente globalement la plateforme étudiante déployée dans le cadre de ce projet sur le serveur du
+Cercle Informatique. L'idéal recherché au travers de cette plateforme est la mise en place d'un service 
+faciliant le partage par les étudiants de documents relatifs aux cours.
 
+Cette plateforme a rencontré un réel engouement et au niveau du partage il s'agit d'un franc succès 
+puisqu'elle a été employée par plus de 600 étudiants depuis sa mise en service en mai 2012.
+A ce jour, plus de 1400 documents sont hebergés sur la plateforme,
+ils sont par conséquent consultables en ligne ou téléchargeables.
+
+Au vu de la demande du corps académique, l'accès à la plateforme a été restreint à la communauté des étudiants 
+de l'ULB. 
 Grâce son authentification basée sur le NetID de l'ULB, elle est accessible à tous les étudiants,
 bien que pour l'instant les seuls cours intégrés sur la plateforme soient
 les cours d'informatique, de physique et de math de la faculté des sciences ainsi
 que l'ensemble des cours de premier bachelier de la faculté de sciences appliquées.
 Les autres cours n'ont pas été intégrés principalement car d'autres plateformes
-répondaient déjà à ce besoin.
+répondaient déjà à ce besoin. Il n'est pas exclu à l'avenir que d'autres cours viennent s'ajouter au catalogue déjà 
+étoffé de la plateforme. Ceci découlera principalement des intérêts des étudiants d'autres sections pour cette plateforme.
 
-D'un point de vue personnel, ce projet fut le premier d'une longue série de réalisation
-assez importantes sous Django. Bien qu'il possède certaines erreurs de jeunesses, c'est grâce
-à ce projet que j'ai réalisé qu'il était possible de créer des sites
-web complexes beaucoup plus rapidement qu'une approche \textit{from scratch} en PHP.
-J'ai évidement appris énormément d'un point de vue technique mais aussi d'un
-point de vue de gestion de projet et de communauté, ces compétences me sont actuellement utiles tous les jours.
+Outre les implications positives pour la communauté estudiantine, ce projet a été une source d'inspiration personnelle.
+En effet, depuis la découverte de Django de très nombreuses réalisations ont été créées. 
+
+Le projet en tant que tel a été longtemps muri entre la définition des premières spécifications, la mise en ligne il y a plus
+d'un an et les résultats actuels. Ceci a permis aussi de le faire évoluer bien qu'on y retrouve encore quelques traces 
+d'erreurs de jeunesse.
+Réaliser un travail sur plusieurs mois avec de telles implications pour la communauté a eu de nombreux bénéfices:
+Un des principaux enseignements tirés de ce projet est la réalisation d'approches plus efficaces et rapides que l'approche
+\textit{from scratch} en PHP pour la création de sites web complexes.
+Il va sans dire qu'un projet d'une telle ampleur a permis un apprentissage conséquent d'un point de vue technique.
+Enfin le travail a permis de développer des compétences clés de gestion de projet et de communauté.
+
+Au quotidien, les compétences aquises lors de la réalisation de ce travail continuent à être valorisées et développées.
 
 \end{document}
