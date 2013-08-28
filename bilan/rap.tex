@@ -481,11 +481,11 @@ $ source ve/bin/activate
 La plateforme web est construite autour d'un petit nombre de page web, chacune
 ayant un rôle fonctionnel. Cette section décrit ces dernières.
 
-Une fois authentifié, l'utilisateur voit la page d'acceuil. La première fois qu'il
+Une fois authentifié, l'utilisateur voit la page d'accueil. La première fois qu'il
 utilise le système, un message d'aide est affiché, il peut le masquer par la suite.
 Il est invité à sélectionner des cours grâce au menu de la barre de navigation,
-qu'il peut choisir de suivre. Les cours suivis sont repris sur la page d'acceuil, ainsi
-que quelques statistiques à propos de ces cours, comme la dernière activité qu'il y
+qu'il peut choisir de suivre. Les cours suivis sont repris sur la page d'accueil, ainsi
+que quelques statistiques à propos de ses cours, comme la dernière activité qu'il y
 a eu dedans. La figure \ref{fig:home} présente la disposition générale de cette page.
 
 Le scénario classique d'utilisation de la plateforme consiste à sélectionner un cours
@@ -496,9 +496,9 @@ C'est aussi sur cette page qu'il peut décider de suivre ou d'arrêter de suivre
 Via cette page, l'étudiant peut uploader un nouveau document, voter pour les documents
 qu'il juge intéressant ou les fils de discussion importants.
 
-S'il choisi de cliquer sur un document, une visionneuse de document lui est proposée.
+S'il choisit de cliquer sur un document, une visionneuse de document lui est proposée.
 Cette page, présentée en figure \ref{fig:viewer}, affiche le rendu de chaque page
-du document PDF ainsi qu'une liste de miniature pour faciliter la navigation. Il
+du document PDF ainsi qu'une liste de miniatures pour faciliter la navigation. Il
 est possible de zoomer et de télécharger le document à partir de cette page. En
 dessous de chaque page du document PDF, ainsi que sur l'ensemble du document, il
 est possible de laisser un commentaire, pour initier un nouveau fil de discussion.
@@ -548,7 +548,7 @@ des commentaires relatifs aux problèmes qu'ils rencontrent ou pour faire des su
   \caption{Visionneuse de document PDF, affichant un TP d'électronique}
   \label{fig:viewer}
 \end{figure}
-
+	
 \begin{figure}
   \centering\includegraphics[scale=0.5]{imgs/search.pdf}
   \caption{Fonction recherche avec comme mot clé \textit{java}}
@@ -575,7 +575,7 @@ pour la synchronisation avec la base de données.
 
 Chaque application Django est responsable d'une famille de fonctionnalités du site.
 Généralement ces familles sont construites autour d'un type d'objet. L'application
-représente les cours sous forme de hierarchie : les cours sont agrégés en catégories,
+représente les cours sous forme de hiérarchie : les cours sont agrégés en catégories,
 ces dernières sont elles-mêmes inclues dans d'autres catégories, de manière récursive,
 jusqu'à une catégorie nommée "Root". Les cours et les catégories sont donc
 placées dans un arbre. Chaque cours ou catégorie peut être inclue dans plusieurs
@@ -593,8 +593,8 @@ types d'objets sont gérés par les applications suivantes :
    des utilisateurs et des permissions, la gestion des documents et la gestion
    de l'arbre de catégorie et cours. Ces outils permettent de supprimer des éléments,
    les modifier et parfois d'en créer
-\item[categories] Application fournissant le support de l'objet catégorie :
-   des fonctions pour les créer, editer, supprimer ainsi que les attacher/détacher de l'arbre
+\item[catégories] Application fournissant le support de l'objet catégorie :
+   des fonctions pour les créer, éditer, supprimer ainsi que les attacher/détacher de l'arbre
 \item[courses] Application fournissant le support de l'objet cours :
    des fonctions pour les créer, les modifier et les manipuler (par exemple compter le nombre
    de document ou fil de discussion qu'ils contiennent)
@@ -612,12 +612,11 @@ types d'objets sont gérés par les applications suivantes :
 \item[search] Application permettant la recherche dans le corpus de document
 \item[upvotes] Application gérant le système de vote des documents et des fils de discussion.
    Cette application permet de classer les documents et fils par type à chaque vote
-   (par exemple pour un document, il est possible que le publique change son classement
+   (par exemple pour un document, il est possible que le public change son classement
    de "projet" à "ancien projet" avec assez de vote). Elle garde aussi un historique
-   de quel utilisateur à voter sur quoi, pour éviter les doublons.
+   du vote de l'utilisateur afin d'éviter les doublons.
 \item[users] Application gérant le profil d'un utilisateur, les cours qu'il suit, le
-   message d'acceuil. Elle s'occupe aussi de déterminer si l'utilisateur à la permission
-   de faire quelque chose ou pas.
+   message d'accueil. Elle s'occupe aussi de déterminer si l'utilisateur a les permissions requises.
 \end{description}
 
 
@@ -645,34 +644,34 @@ de celles utiles pour le projet.
       détaillées dans la section précédente.
 \item[Template\_dirs] Ce tuple doit contenir tous les chemins d'accès au dossier
       contenant des \textit{templates} qui ne sont pas liés à des applications Django.
-\item[Root\_urlconf] Chaine de caractère indiquant le fichier à employer comme
+\item[Root\_urlconf] Chaine de caractères indiquant le fichier à employer comme
       base pour le résolveur d'URL
-\item[Static\_root, Static\_url] Chaines de caractère contenant les informations
+\item[Static\_root, Static\_url] Chaines de caractères contenant les informations
       pour la livraison des fichiers statiques aux clients
 \item[Convert\_pdf] Variable booléenne indiquant si la conversion PDF est active
 \item[User\_check] Chaîne de caractères référençant l'URL à employer pour contacter
       le système d'authentification de l'ULB
 \item[Upload\_dir] Chaîne de caractères indiquant le chemin vers le dossier contenant
       les pdf, leurs pages...
-\item[Parsing\_worker] Nombre de traitement de PDF maximum en parallèle
+\item[Parsing\_worker] Nombre de traitements de PDF maximum en parallèle
 \end{description}
 
 
 \section{Traduction du site}
 
 La plateforme étudiante est actuellement traduite en deux langues : anglais et français.
-Cette étape est rendu simple par Django qui supporte par défaut les systèmes
+Cette étape est rendue simple par Django qui supporte par défaut les systèmes
 de localisation\footnote{https://docs.djangoproject.com/en/dev/topics/i18n/translation/}.
 
-Pour traduire la plateforme, la première étape à été de marquer les chaines de
+Pour traduire la plateforme, la première étape a été de marquer les chaines de
 caractères affichées au client. Grâce à la séparation entre le contenu et la présentation,
 tous les textes affichés aux clients sont dans les \textit{templates}. Cette concentration
 a permis de gagner beaucoup de temps.
 
 Pour déclarer un texte à traduire, dans un \textit{template}, il y a deux manières
 de procéder. Si le texte est court, il peut être affiché grâce à la commande 
-\texttt{\{\% trans "du text" \%\}}. Par contre, si le texte est plus long, inclu des
-éléments HTML ou plus, il faut employer une déclaration par block, intercalé entre
+\texttt{\{\% trans "du text" \%\}}. Par contre, si le texte est plus long, inclut des
+éléments HTML ou plus, il faut employer une déclaration par block, intercalée entre
 deux commandes : \texttt{\{\% blocktrans \%\}} et \texttt{\{\% endblocktrans \%\}}.
 Un exemple est disponible ci-dessous.
 
@@ -685,7 +684,7 @@ Un exemple est disponible ci-dessous.
 \end{verbatim}
 
 Grâce à ces marqueurs, Django sait exactement ce qu'il faut traduire dans le site.
-Malheureusement, à ce stade il ne sait pas comment le traduire. Dans ce cas là,
+Malheureusement, à ce stade il ne sait pas comment le traduire. Dans ce cas-là,
 par défaut, il va afficher le texte d'origine. Django utilise l'utilitaire GNU
 standard \textit{gettext} pour la traduction.
 
@@ -693,7 +692,7 @@ La seconde étape est d'extraire toutes les chaines de caractères
 marquées dans un fichier de messages (ayant l'extension \textit{.po}).
 Pour ce faire, la commande suivante du
 manager est à exécuter : \texttt{django-admin.py makemessages -l fr}. Cette commande
-regroupe toutes les traductions d'une langue et fourni à Django une association
+regroupe toutes les traductions d'une langue et fournit à Django une association
 entre les chaînes d'origines et les chaînes traduites. Il faut que le traducteur
 complète ce fichier. Une fois cette étape effectuée, il faut compiler
 le fichier de traduction au moyen de la commande \texttt{django-admin.py compilemessages}.
@@ -724,9 +723,9 @@ le formulaire suivant :
 
 Une fonction utile pour le projet est de fournir aux étudiants la possibilité
 de visionner un PDF directement dans l'interface web au lieu de les obliger
-à le télécharger. Cette fonction est similaire à la visionneuse de document fournie
+à le télécharger. Cette fonction est similaire à la visionneuse de documents fournie
 par Google Doc. Pour offrir ce service, il est impossible de calculer le rendu du PDF
-à chaque fois que l'étudiant charge la visionneuse, il faut donc pré-traiter chaque
+à chaque fois que l'étudiant charge la visionneuse, il faut donc prétraiter chaque
 document lors de l'upload. Cette section couvre l'architecture du \textit{processing-daemon},
 une application parallèle au serveur web qui se charge de cette tâche.
 
@@ -735,22 +734,22 @@ arrivé que cette application passe plusieurs dizaines de minutes et emploie des
 de mégabytes de RAM pour traiter un document de plus de 200 pages. Il faut
 donc que cette application puisse lancer un traitement dès qu'un document arrive
 mais ne pas lancer trop de traitement en parallèle : un mécanisme asynchrone est requis.
-Pour l'implémenter, il a été décider de doter le modèle d'un document d'une propriété,
-le status, pour indiquer où en est le traitement : il peut etre \textit{pending}, c'est
-à dire que l'utilisateur vient de l'uploader mais que le traitement n'a pas encore commencé,
-\textit{inprocess}, c'est à dire en cours de traitement et \textit{done} quand il est terminé.
+Pour l'implémenter, il a été décidé de doter le modèle d'un document d'une propriété,
+le statut, pour indiquer où en est le traitement : il peut être \textit{pending}, c'est-à-dire
+que l'utilisateur vient de l'uploader mais que le traitement n'a pas encore commencé,
+\textit{inprocess}, c'est-à-dire en cours de traitement et \textit{done} quand il est terminé.
 
 Afin d'accélérer le processus, il est possible de spécifier un certain
-nombre de traitement faisable en parallèle : la boucle principale du \textit{processing-daemon}
+nombre de traitements faisables en parallèle : la boucle principale du \textit{processing-daemon}
 est donc une série de \texttt{fork} et de \texttt{wait} : chaque enfant pourra exécuter un traitement.
-Toute les 10 secondes, le \textit{processing-daemon} va faire une requète à la base
-de donnée pour savoir combien de document il y a traiter. S'il y a en, il va les confier
-à ses enfants, dans la limite disponible, et modifier le status du document.
+Toutes les 10 secondes, le \textit{processing-daemon} va exécuter une requête à la base
+de données pour savoir combien de documents il y a traiter. S'il y a eu, il va les confier
+à ses enfants, dans la limite disponible, et modifier le statut du document.
 
-Le rôle principale de chaque enfant est d'extraire de chaque document une série
+Le rôle principal de chaque enfant est d'extraire de chaque document une série
 d'images représentant les pages. Comme l'indique la capture d'écran de la figure \ref{fig:viewer},
 il y a deux types d'images : les miniatures (180px de large) et la page au zoom 
-choisi par l'utilisateur. Malheureusement, le zoom utilisateur est calculé par
+choisie par l'utilisateur. Malheureusement, le zoom utilisateur est calculé par
 le navigateur à partir d'un rendu : généralement, il n'est pas très bon, et plus il
 est éloigné de la résolution d'origine, moins il est bon. Pour chaque page, en
 plus de la miniature, le \textit{processing-daemon} va extraire plusieurs "grandes"
@@ -763,46 +762,46 @@ plusieurs statistiques comme la hauteur de chaque page, le nombre de page...
 
 \section{Fonction de recherche}
 
-Actuellement, le projet héberge plusieurs centaines de document (1440 à l'heure où ces lignes sont écrites).
+Actuellement, le projet héberge plusieurs centaines de documents (1440 à l'heure où ces lignes sont écrites).
 Afin de permettre à l'utilisateur de trouver un document particulier, une
 fonction de recherche fut implémentée. Tout d'abord, cette section abordera
 la question de précalcul sur les documents présent, ce qui est exécuté lors
 du traitement d'un document lors de son upload. Ensuite, cette section
 détaillera la fonction de calcul du classement des documents en fonction
-d'une certaine requète.
+d'une certaine requête.
 
-Le traitement des documents évoqués à la section précédente inclue une extraction
-textuel. Au moyen de la bibliothèque \textit{poppler}, il transforme un document
+Le traitement des documents évoqué à la section précédente inclut une extraction
+textuelle. Au moyen de la bibliothèque \textit{poppler}, il transforme un document
 PDF en une représentation textuelle. Ensuite il extrait les mots de cette représentation
 puis leur racine morphologique grâce à un processus appelé \textit{stemming}
 \footnote{https://en.wikipedia.org/wiki/Stemming}. Enfin, pour tout document,
-il compte le nombre d'occurence de chaque racine ainsi que le nombre total de mot du document.
-Il sauvegarde le tout dans une base de donnée (le tuple : document, racine, nombre).
+il compte le nombre d'occurrences de chaque racine ainsi que le nombre total de mots du document.
+Il sauvegarde l'ensemble de ces informations dans une base de données (le tuple : document, racine, nombre).
 
 Le \textit{term frequency–inverse document frequency} (TF-IDF) est un indicateur
-qui reflete l'importance d'un mot dans un document par rapport à son importance
+qui reflète l'importance d'un mot dans un document par rapport à son importance
 dans l'ensemble du corpus de document. Il est proportionnel à la fréquence d'un terme
 d'un document par rapport à la fréquence de ce terme dans l'ensemble des documents.
-Par exemple, le verbe "est" est très fréquent dans tout les documents, il aura
-un très faible TF-IDF, probablement constant pour tout les documents,
+Par exemple, le verbe "être" est très fréquent dans tous les documents, il aura
+un très faible TF-IDF, probablement constant pour tous les documents,
 alors que le nom "sécurité" aura un TF-IDF beaucoup plus élevé dans un document
 relatif à la sécurité informatique (parce que le terme sera souvent employé)
-par rapport à un document sur les mathématiques discretes (où il ne sera probablement
-pas présent). Cet indicateur est la première manière utilisé pour classer
-un document par rapport à un autre étant donné une requète de recherche.
+par rapport à un document sur les mathématiques discrètes (où il ne sera probablement
+pas présent). Cet indicateur est la première manière utilisée pour classer
+un document par rapport à un autre étant donné une requête de recherche.
 
-Ensuite, il est intuitif de ce dire que les documents souvent visité sont
-plus important. Le classement brute fourni par le calcul du TF-IDF est donc raffiné
-par rapport aux nombres de vue et téléchargement des documents.
+Il est intuitif de se dire que les documents souvent visités sont
+plus importants. Le classement brut fourni par le calcul du TF-IDF est donc raffiné
+par rapport au nombre de vues et téléchargements des documents.
 
 Par exemple, avec le terme \textit{java}, la recherche trouve des documents de langage
-de programmation, base de donnée, informatique fondamentale, etc, comme le montre la figure
+de programmation, base de données, informatique fondamentale, etc, comme le montre la figure
 \ref{fig:search}.
 
 
 \section{Authentification des utilisateurs}
 
-Une spécification du projet était de pouvoir garantir que seul les étudiants de l'ULB
+Une spécification du projet était de pouvoir garantir que seuls les étudiants de l'ULB
 pouvait accéder aux ressources offertes par ce site, principalement pour des raisons
 de propriété intellectuelle et parce que certains professeur sont rétissant à 
 ce que des éléments extérieurs puissent télécharger des cours. De plus, afin
