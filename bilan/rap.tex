@@ -80,6 +80,16 @@
 
 \section{Introduction}
 
+% Depuis toujours l'entraide et le partage font partie des valeurs fondamentales à l'ULB. Les conseils, astuces, notes de cours et autres documents
+% ont pendant de nombreuses années été échangés sur le forum de discussion nommé CandiULB.
+% Parallèlement à une diversification des mediums de communication sur internet, le forum est petit-à-petit tombé en désuétude
+% pour en 2009 être définitivement abandonné.
+
+Différents groupes de personnes ont tenté de remettre le partage à l'ordre du jour 
+au travers d'une plateforme adaptée aux besoins des étudiants. C'est sur cette base que le projet décrit ci-après a vu
+le jour avec pour objectif d'atteindre cet idéal.
+
+% FIN COMMENTAIRE SUPPRIMER LE § ci dessous
 Pendant de nombreuses années, les étudiants de l'ULB échangèrent des conseils, trucs et astuces,
 documents et informations via le forum de discussion nommé CandiULB. Ce dernier est tombé en désuétude et vers 2009,
 fut définitivement abandonné.
@@ -90,15 +100,16 @@ Durant le courant de l'année académique 2010-2011, une série de spécificatio
 principalement autour du texte fondateur écrit par Laurent Peuch
 \footnote{http://worlddomination.be/blog/2012/idee-dun-plateforme-dentre-aide-pour-edutiants.html}.
 Durant l'année académique 2011-2012, ce projet fut mis en place, pour culminer en mai 2012
-par la mise en production de la première version de la plateforme étudiante du Cercle Informatique
-\footnote{https://cours.cerkinfo.be}. Ce document est relatif à cette plateforme.
+par la mise en production de la première version de la plateforme étudiante hebergée sur le site du Cercle Informatique
+\footnote{https://cours.cerkinfo.be}. Ce document traite de cette plateforme, de ces caractéristiques et des différentes
+aspects envisagés pour atteindre une ébauche de plateforme idéale.
 
 Le but principal de la plateforme est d'offrir aux étudiants un espace pour uploader
-des documents, les télécharger ou les visionner en ligne. Il propose aussi un espace
-pour discuter des cours et des documents. En plus de ces fonctionnalités de base,
+des documents, les télécharger ou les visionner en ligne. Un espace de discussion est aussi proposé
+afin d'échanger sur les cours et les documents. En plus de ces fonctionnalités de base,
 le site permet aux utilisateurs d'attribuer des points aux ressources et discussions,
-permettant de les classer entre-elles, limitant le travail de modération (les mauvaises
-contributions sont rendue invisibles au lieu d'être censurées).
+permettant de les hiérarchiser. Ceci a pour avantage de limiter le travail de modération (les mauvaises
+contributions sont rendues invisibles au lieu d'être censurées).
 
 Ce document cherche à couvrir différents aspects de cette plateforme, tout d'abord en
 expliquant les choix réalisés pour cette plateforme (section 2) et en présentant
@@ -109,13 +120,13 @@ la base de données (section 5). Par après, il s'intéressera au projet en lui-
 avec une explication de la méthode de déploiement (section 6), la
 description des fonctionnalités (section 7) et l'architecture des différents
 composant et la manière de les configurés (section 8 et 9). La suite du
-document détail certains point particulier de la plateforme, comme la traduction (section 10),
+document détaille certains points particuliers de la plateforme, comme la traduction (section 10),
 le pré-traitement des documents (section 11), la fonction de recherche (section 12)
-et l'authentification (section 13). Ce document abordera des questions
-plus générales et la manière dont elle sont traitées par la plateforme, comme la
+et l'authentification (section 13). Ce document abordera des questions d'ordre 
+plus général ainsi que leur traitement par la plateforme. On y trouvera notamment une section sur la
 sécurité (section 14) et la validation (section 15). Finalement, ce travail propose aussi
-une manière de travailler en continuous testing (section 16) et conclura
-globalement avec le résultat concret de la plateforme (section 17).
+une approche de travail en continuous testing (section 16) et conclura
+avec le résultat concret de la plateforme (section 17).
 
 
 \section{Choix technologiques}
@@ -123,7 +134,7 @@ globalement avec le résultat concret de la plateforme (section 17).
 Le projet a été réalisé grâce au \textit{framework} Django, écrit en langage Python.
 Python est un langage haut niveau, particulièrement expressif et étudié par
 les étudiants en informatique de l'ULB. Un \textit{framework} est une abstraction
-fournissant au développeur l'ensemble des bibliothèques, outils et paradigme
+fournissant au développeur l'ensemble des bibliothèques, outils et paradigmes
 dont il a besoin, lui permettant d'économiser du temps de travail. 
 
 Django fut choisi car il est basé sur un langage étudié à l'ULB et est très populaire.
@@ -156,8 +167,8 @@ de manière individuelle, sans se soucier de celle présente précedemment ou ap
 pour la majorité des applications il faut aussi mettre en place un mécanisme permettant
 d'identifier le client, de garder certaines propriétés de ce dernier...
 
-Pour chaque requête d'une page web que le client fait au serveur, cette dernière
-va arriver à Django au niveau du résolveur d'URL, première étape sur la figure \ref{fig:mvc}.
+Chaque requête d'une page web que le client envoie au serveur arrive 
+à Django au niveau du résolveur d'URL, première étape sur la figure \ref{fig:mvc}.
 Cette étape permet d'associer une fonction
 à chaque demande du client. Les URLs sont reconnues au moyen d'expressions rationnelles.
 Par exemple, si le développeur veut deux pages web différentes, l'une affichant
@@ -175,13 +186,13 @@ urlpatterns = patterns("",
 
 Le résolveur d'URL permet d'extraire certaines parties de l'URL reconnues et de les donner
 comme argument à la fonction à appeler. Dans l'exemple précédent, la fonction \textit{page2}
-sera appelé avec le nombre en fin d'URL en argument.
+sera appelée avec le nombre en fin d'URL en argument.
 
 Cette fonction est appelée la \textit{view}. Cette dernière prend au minimum un paramètre,
 un objet requête. Il contient énormément d'informations sur le client, l'url demandé,
 la méthode HTTP employée, des paramètres du serveur... Le rôle de cette fonction
 est de fabriquer la page web envoyée au client, c'est sa valeur de retour. Pour ce faire,
-la fonction fait usuellement des requêtes à la base de données en employant des modèles
+la fonction envoie usuellement des requêtes à la base de données en employant des modèles
 d'objet et calcule le rendu de la page en employant le moteur de \textit{template}.
 
 Par exemple, pour afficher l'index de l'exemple précédent, avec la fonction \textit{page1},
@@ -221,14 +232,13 @@ Ce fichier va être interprété par le moteur de rendu et la valeur de la varia
 technique est très puissante car elle permet de diviser le travail de calcul
 du contenu de la page de sa présentation. Cette approche augmente la lisibilité
 du site web d'un point de vue développeur et permet de scinder les rôles : d'un
-coté le programmeur, qui n'a pas besoin de se préoccuper des questions
-de HTML, CSS et de l'autre le designer, qui n'a dans ce cas-ci pas
-besoin de connaitre Python ou les bases de données.
+coté le programmeur, qui ne doit pas se préoccuper des questions
+de HTML, CSS et de l'autre le designer, pour qui il n'est pas nécessaire de connaitre Python ou les bases de données.
 
 Dans Django, le mécanisme de \textit{template} est très évolué : il permet
-de faire des boucles et des conditions, possède des dizaines de filtres (par
+de faire des boucles et des conditions et enfin possède des dizaines de filtres (par
 exemple mettre le premier mot d'une variable en majuscule ou formater une date).
-Il permet de faire des architectures complètes grâce à l'héritage de pages :
+Il permet aussi de créer des architectures complètes grâce à l'héritage de pages :
 une section du \textit{template} peut-être utilisée par toute une série d'autres
 pages, en spécialisant les parties nécessaires.
 
@@ -242,10 +252,10 @@ pages, en spécialisant les parties nécessaires.
 
 Afin de compléter cette section, il est important d'aborder les \textit{generic view}.
 Une vue générique est une fonction fournie par la bibliothèque Django permettant
-d'exécuter des actions simples, "que tout le monde fait". Par exemple, pour lister
-un sous-ensemble d'un type d'objet, il suffit d'utiliser cette fonction. Dans
-le cas d'une liste de documents relatifs à un cours en particulier, le développeur
-n'a plus besoin d'écrire une vue particulière. Il peut juste référencer la vue
+d'exécuter des actions simples, "que tout le monde fait". Comme par exemple, pour lister
+un sous-ensemble d'un type d'objet. Dans
+le cas d'une liste de documents relatifs à un cours en particulier, il n'est plus nécessaire que le développeur
+écrive une vue particulière car il peut juste référencer la vue
 générique dans le résolveur d'URL et donner le nom du template à employer
 ainsi que quelques paramètres. Ce projet emploie énormément cette méthode. 
 
@@ -264,7 +274,7 @@ script est accessible avec la commande \texttt{./manage.py <nom de commande>}.
              sur la base de données, aider à l'implémentation du code en fournissant
              un mode interactif d'exécution...
 \item[runserver] Exécute un serveur web localement, fournissant un environnement
-             de test au développeur. Ce mode est absolument pas adapté à un usage en production.
+             de test au développeur. Ce mode n'est absolument pas adapté à un usage en production.
 \item[startapp] Crée une nouvelle Django-app (voir section ultérieur) dans le projet.
 \item[test] Lance la suite de tests des applications Django.
 \end{description}
@@ -273,11 +283,11 @@ script est accessible avec la commande \texttt{./manage.py <nom de commande>}.
 \section{Interaction avec la base de données}
 
 Un \textit{Object-relational mapping} (ORM) est une technique
-pour convertir des objets en mémoire en enregistrement dans une base de données
+de conversion d'objets en mémoire en enregistrement dans une base de données
 relationnelle et inversement. Cette technique est très puissante et permet
 au programmeur de ne plus interagir directement avec la base de données, juste
 de manipuler des objets. A ce titre, Django possède un ORM, dont les principales
-caractéristique vont être développées ici.
+caractéristiquez vont être développées ici.
 
 Comme évoqué dans la section précédente, la fonction \textit{view} a la responsabilité
 du calcul de la page. Souvent cette dernière se base sur des informations présentes
@@ -302,7 +312,7 @@ class Course(models.Model):
     threads = models.ManyToManyField(Thread)
 \end{verbatim}
 
-L'ORM de Django permet de manipuler des objets cours grâce à une API simple.
+L'ORM de Django permet de manipuler des objets \textit{cours} grâce à une API simple.
 Il est possible de créer des nouveaux objets en les instanciant, de les
 sauver en base de données, de lire ou modifier une valeur d'un champ,
 de les supprimer, comme le monde l'exemple suivant :
@@ -324,15 +334,15 @@ de les supprimer, comme le monde l'exemple suivant :
 
 Comme évoqué précédemment, le code décrivant les
 modèles est notamment utilisé pour associer les champs des enregistrements
-aux propriétés des objets. Cette technique permet de ne pas avoir
-à s'occuper d'interagir avec la base de données et de s'occuper d'objets uniquement.
-Malheureusement, au fil de l'évolution du projet, la structure des différents modèles
+aux propriétés des objets. Cette technique permet de s'occuper des objets uniquement au lieu 
+d'interagir avec la base de données.
+Au fil de l'évolution du projet, la structure des différents modèles
 est amenée à changer : il faut que la structure de la base de données évolue simultanément.
 De cette constatation découle plusieurs questions : comment, quoi, qui?
 
-Ce travail conseille d'employer l'application \textit{django-south}
+Ce travail conseille d'employer l'application \textit{Django-south}
 \footnote{http://south.aeracode.org/}. Cette dernière permet de garder l'état d'un modèle
-à différent moment de son développement et à calculer des \textit{deltas} de modèle, équivalent
+à différents moments de son développement et à calculer des \textit{deltas} de modèle, équivalent
 à un delta d'un code source dans un système de gestion de versions. Ensuite,
 à la demande de l'utilisateur, \textit{django-south} applique les \textit{deltas}
 (appelées migrations) sur la base de données. Il possède des mécanismes pour les
@@ -341,18 +351,18 @@ données en même temps que le réglage de la table, possibilité de faire un ro
 sur une migration...
 
 Physiquement, les migrations sont stockées dans des fichiers dans un sous-dossier
-\textit{migrations} de l'application django. Elle sont sous la forme de fichier
+\textit{migrations} de l'application Django. Elle sont sous la forme de fichier
 Python, pouvant être controlées avec un système de gestion de versions. Une explication
 détaillée est disponible sur le site de \textit{djangopro}
 \footnote{http://www.djangopro.com/2011/01/django-database-migration-tool-south-explained/}.
 
-Par exemple, voici une session d'utilisation de l'outil \textit{django-south}.
+Par exemple, voici une session d'utilisation de l'outil \textit{Django-south}.
 Le scénario d'utilisation est le suivant : sur un ordinateur \texttt{(ve)}, le développeur
 ajoute un nouveau modèle \textit{lapin} à l'application \textit{animal}. Ensuite,
 il modifie ce modèle en ajoutant un champ. Par la suite, il copie les différents
 fichiers sur une autre machine possédant déjà une base de données. Il convient de
-modifier cette dernière pour être synchronisé avec les sources de l'application,
-avec la commance \texttt{migrate}.
+modifier cette dernière afin d'être synchronisé avec les sources de l'application,
+avec la commande \texttt{migrate}.
 
 \begin{Verbatim}
 \textcolor{Blue}{# Django app "animal", un seul modèle : le Lapin, possédant un nom}
@@ -371,7 +381,7 @@ Created 0001_initial.py.
 You can now apply this migration with: ./manage.py migrate animal
 
 \textcolor{Blue}{# Application de la migration, contenant le nouveau modèle}
-(ve)hastake@phenyl ~/mouh/mouh $ ./manage.py migrate animal
+(ve) $ ./manage.py migrate animal
 Running migrations for animal:
  - Migrating forwards to 0001_initial.
  > animal:0001_initial
@@ -416,20 +426,21 @@ Installed 0 object(s) from 0 fixture(s)
 __init__.py
 \end{Verbatim}
 
-A l'heure où ces lignes sont écrites, un nouveau système est déployé sur
-les nouvelles version de Django : \textit{Schema alteration}
+Comme signalé ci-avant, il est indispensable pour un tel projet d'évoluer, c'est pourquoi à
+l'heure où ces lignes sont écrites, un nouveau système est déployé sur
+les nouvelles versions de Django : \textit{Schema alteration}
 \footnote{http://www.kickstarter.com/projects/andrewgodwin/schema-migrations-for-django}
-\footnote{https://github.com/django/django/pull/376}. Ce système permettra
-une plus grande flexibilité, sera intégré à Django lui-même, possèdera un
+\footnote{https://github.com/django/django/pull/376}. Ce système permet
+une plus grande flexibilité, est intégré à Django lui-même, possède un
 format de migration beaucoup plus lisible, plus facile à rebaser ou à
-fusionner avec d'autres branches et détectera plus de modifications de modèle
+fusionner avec d'autres branches et détecte plus de modifications de modèle
 automatiquement.
 
 
 \section{Déploiment d'un projet Django}
 
 Outre Django, une application web a généralement d'autres dépendances. Par exemple
-ce travail dépend aussi de l'application \textit{django-south} détaillée plus haut.
+ce travail dépend aussi de l'application \textit{Django-south} détaillée plus haut.
 Plus précisément, l'application web dépend de logiciel externe ayant certaines versions.
 Par exemple, un site fonctionnant sous Django 1.4 aura besoin de quelques modifications
 pour fonctionner sous Django 1.5 et ne fonctionnera probablement pas du tout sous
@@ -438,9 +449,9 @@ fournit un outil, nommé \textit{virtualenv}.
 
 Un environnement virtuel (\textit{virtualenv}) est une sandbox
 \footnote{https://fr.wikipedia.org/wiki/Sandbox\_\%28s\%C3\%A9curit\%C3\%A9\_informatique\%29}
-permettant d'installer toute une série de bibliothèque pour l'environnement
+permettant d'installer toute une série de bibliothèques pour l'environnement
 local sans perturber le système hôte. Cela permet d'avoir l'ensemble des dépendances
-logiciels à une certaine version localement.
+logiciels à une version prédéfinie localement.
 
 Pour distribuer et installer facilement une bibliothèque, l'écosystème Python
 possède un logiciel nommé \textit{pip}. Ce dernier se base sur le
@@ -449,8 +460,8 @@ paquets Python, disponible à l'installation, avec un système de dépendance.
 Pour automatiser l'installation, il est d'usage d'écrire un fichier, conventionnellement
 nommé \textit{requirement.txt}, listant les dépendances de l'application.
 
-Par exemple, dans le cas de la plateforme, voici la manière d'utiliser l'environnement
-virtuelle et l'installateur de dépendance :
+Par exemple, dans le cas de la plateforme, voici la méthode pour travailler avec  l'environnement
+virtuel et l'installateur de dépendances :
 
 \begin{Verbatim}
 \color{Blue}{# Liste des dépendances du projet}
@@ -478,23 +489,23 @@ $ source ve/bin/activate
 
 \section{Description des fonctionnalités}
 
-La plateforme web est construite autour d'un petit nombre de page web, chacune
+La plateforme web est construite autour d'un petit nombre de pages web, chacune
 ayant un rôle fonctionnel. Cette section décrit ces dernières.
 
-Une fois authentifié, l'utilisateur voit la page d'accueil. La première fois qu'il
+Après authentification l'utilisateur voit la page d'accueil. La première fois qu'il
 utilise le système, un message d'aide est affiché, il peut le masquer par la suite.
 Il est invité à sélectionner des cours grâce au menu de la barre de navigation,
 qu'il peut choisir de suivre. Les cours suivis sont repris sur la page d'accueil, ainsi
-que quelques statistiques à propos de ses cours, comme la dernière activité qu'il y
-a eu dedans. La figure \ref{fig:home} présente la disposition générale de cette page.
+que quelques statistiques à propos de ses cours, comme la dernière activité y relative.
+La figure \ref{fig:home} présente la disposition générale de cette page.
 
 Le scénario classique d'utilisation de la plateforme consiste à sélectionner un cours
 et regarder les ressources disponibles pour ce dernier. Cette page est présentée en
 figure \ref{fig:course}. Cette page permet à l'utilisateur de voir une liste de documents
-jugé intéressants pour ce cours ainsi qu'une liste de fil de discussion liée à ce cours.
+jugé intéressants pour ce cours ainsi qu'une liste de fils de discussion liée à ce cours.
 C'est aussi sur cette page qu'il peut décider de suivre ou d'arrêter de suivre un cours.
 Via cette page, l'étudiant peut uploader un nouveau document, voter pour les documents
-qu'il juge intéressant ou les fils de discussion importants.
+qu'il juge intéressants ou les fils de discussion importants.
 
 S'il choisit de cliquer sur un document, une visionneuse de document lui est proposée.
 Cette page, présentée en figure \ref{fig:viewer}, affiche le rendu de chaque page
@@ -508,13 +519,13 @@ est une suite de commentaires, par différents auteurs, auquel il est possible
 de répondre. Chaque fils de discussion est lié à une ressource, un cours, un
 document ou à une page d'un document. Par exemple, si la page 2 d'un document
 est commenté, le fil de discussion apparaitra dans les fils de discussion
-relatif à la page, au document et au cours. Par contre, si l'utilisateur
+relatifs à la page, au document et au cours. Par contre, si l'utilisateur
 poste un commentaire relatif à tout le cours, il ne sera listé que sur la page
 du cours. Il est possible de mettre en page les différents commentaires avec la syntaxe
 \textit{markdown}, une approche très populaire sur internet.
 
-Outre ses fonctions principales, le site possède un \textit{wall}, un mur
-de notification. A chaque fois qu'un évènement se produit, c'est-à-dire
+Outre ces fonctions principales, le site possède un \textit{wall}, un mur
+de notification. Lorsqu'un évènement se produit, c'est-à-dire
 si quelqu'un uploade un nouveau document, poste un nouveau commentaire ou répond
 dans un fil de discussion, une notification est ajoutée au mur. Ce mur possède
 une page RSS qu'il est possible d'ajouter à son lecteur de flux préféré.
@@ -558,8 +569,8 @@ des commentaires relatifs aux problèmes qu'ils rencontrent ou pour faire des su
 
 \section{Architecture des différents composants}
 
-Cette section détaille la manière dont le projet est découpé en différent
-composants. Cette modularité permet de prendre en main le projet plus facilement
+Le projet est découpé en différents
+composants, détaillés dans cette section. Cette modularité permet de prendre en main le projet plus facilement
 et de simplifier la maintenance. De plus, il oblige le développeur à
 prendre en compte le couplage entre les différents composants, ce qui mène
 à des logiciels moins complexes.
@@ -578,12 +589,12 @@ Généralement ces familles sont construites autour d'un type d'objet. L'applica
 représente les cours sous forme de hiérarchie : les cours sont agrégés en catégories,
 ces dernières sont elles-mêmes inclues dans d'autres catégories, de manière récursive,
 jusqu'à une catégorie nommée "Root". Les cours et les catégories sont donc
-placées dans un arbre. Chaque cours ou catégorie peut être inclue dans plusieurs
+placées dans un arbre. Chaque cours ou catégorie peut être inclu dans plusieurs
 autres catégorie en même temps : par exemple un cours peut être référencé dans
 une catégorie lié à la partie Polytechnique de l'arbre et dans une catégorie liée à la
 partie Informatique.
 
-Généralement, l'arbre est divisé de la même manière que l'université : faculté,
+Généralement, l'arbre est divisé selon la même structure que l'université : faculté,
 section, année, options. Chaque feuille peut contenir des cours ou des sous-catégories.
 Chaque cours peut contenir des fils de discussion et des documents. Tous ces
 types d'objets sont gérés par les applications suivantes :
@@ -592,20 +603,20 @@ types d'objets sont gérés par les applications suivantes :
 \item[admin] Application fournissant trois outils d'administration : la gestion
    des utilisateurs et des permissions, la gestion des documents et la gestion
    de l'arbre de catégorie et cours. Ces outils permettent de supprimer des éléments,
-   les modifier et parfois d'en créer
+   les modifier et parfois d'en créer.
 \item[catégories] Application fournissant le support de l'objet catégorie :
    des fonctions pour les créer, éditer, supprimer ainsi que les attacher/détacher de l'arbre
 \item[courses] Application fournissant le support de l'objet cours :
    des fonctions pour les créer, les modifier et les manipuler (par exemple compter le nombre
-   de document ou fil de discussion qu'ils contiennent)
+   de documents ou fils de discussion qu'ils contiennent)
 \item[documents] Application contenant les objets document et page, permettant de les
-   créer et manipuler. Cette application inclue aussi un ensemble de fonction pour
+   créer et manipuler. Cette application inclut aussi un ensemble de fonctions pour
    voter sur les documents, les télécharger et les uploader, les lister suivant certains
    paramètre... L'application contient aussi le processus de traitement des documents
 \item[messages] Application contenant les objets fil de discussion et post, les méthodes
    pour les manipuler (création, édition, suppression, vote)
 \item[notifications] Application gérant le système de création d'évènements. Il existe
-   un objet par type d'évènement mais ces derniers sont tous stockés dans la même
+   un objet par type d'évènements mais ces derniers sont tous stockés dans la même
    table grâce à un système basé sur des métaclasses. Il existe 4 types d'évènements :
    \textit{Annoucement, ReplyEvent, ThreadEvent} et \textit{UploadEvent}. L'application
    contient aussi le mur de notification et le flux RSS
