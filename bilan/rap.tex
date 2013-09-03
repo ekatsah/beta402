@@ -80,28 +80,22 @@
 
 \section{Introduction}
 
-% Depuis toujours l'entraide et le partage font partie des valeurs fondamentales à l'ULB. Les conseils, astuces, notes de cours et autres documents
-% ont pendant de nombreuses années été échangés sur le forum de discussion nommé CandiULB.
-% Parallèlement à une diversification des mediums de communication sur internet, le forum est petit-à-petit tombé en désuétude
-% pour en 2009 être définitivement abandonné.
+Depuis toujours l'entraide et le partage font partie des valeurs fondamentales à l'ULB.
+Les conseils, astuces, notes de cours et autres documents ont pendant de
+nombreuses années été échangés sur le forum de discussion nommé CandiULB.
+Parallèlement à une diversification des mediums de communication sur internet,
+le forum est petit-à-petit tombé en désuétude pour en 2009 être définitivement abandonné.
 
-Différents groupes de personnes ont tenté de remettre le partage à l'ordre du jour 
-au travers d'une plateforme adaptée aux besoins des étudiants. C'est sur cette base que le projet décrit ci-après a vu
+Différents groupes de personnes ont tenté de remettre la collboration à l'ordre du jour 
+au travers d'une plateforme web. C'est sur cette base que le projet décrit ci-après a vu
 le jour avec pour objectif d'atteindre cet idéal.
-
-% FIN COMMENTAIRE SUPPRIMER LE § ci dessous
-Pendant de nombreuses années, les étudiants de l'ULB échangèrent des conseils, trucs et astuces,
-documents et informations via le forum de discussion nommé CandiULB. Ce dernier est tombé en désuétude et vers 2009,
-fut définitivement abandonné.
-Différents groupes de personnes ont tenté de remettre le partage à l'ordre du jour 
-au travers d'une plateforme adaptée aux besoins des étudiants. Ce projet vise cet idéal.
 
 Durant le courant de l'année académique 2010-2011, une série de spécifications ont été écrites,
 principalement autour du texte fondateur écrit par Laurent Peuch
 \footnote{http://worlddomination.be/blog/2012/idee-dun-plateforme-dentre-aide-pour-edutiants.html}.
 Durant l'année académique 2011-2012, ce projet fut mis en place, pour culminer en mai 2012
-par la mise en production de la première version de la plateforme étudiante hebergée sur le site du Cercle Informatique
-\footnote{https://cours.cerkinfo.be}. Ce document traite de cette plateforme, de ces caractéristiques et des différentes
+par la mise en production de la première version de la plateforme étudiante hebergée sur le serveur du Cercle Informatique
+\footnote{https://cours.cerkinfo.be}. Ce document traite de cette plateforme, de ses caractéristiques et des différentes
 aspects envisagés pour atteindre une ébauche de plateforme idéale.
 
 Le but principal de la plateforme est d'offrir aux étudiants un espace pour uploader
@@ -131,7 +125,7 @@ avec le résultat concret de la plateforme (section 17).
 
 \section{Choix technologiques}
 
-Le projet a été réalisé grâce au \textit{framework} Django, écrit en langage Python.
+Le projet a été réalisé grâce au \textit{framework} Django\footnote{https://www.djangoproject.com/}, écrit en langage Python.
 Python est un langage haut niveau, particulièrement expressif et étudié par
 les étudiants en informatique de l'ULB. Un \textit{framework} est une abstraction
 fournissant au développeur l'ensemble des bibliothèques, outils et paradigmes
@@ -250,7 +244,8 @@ pages, en spécialisant les parties nécessaires.
   \label{fig:mvc}
 \end{figure}
 
-Afin de compléter cette section, il est important d'aborder les \textit{generic view}.
+Afin de compléter cette section, il est important d'aborder les \textit{generic view}
+\footnote{https://docs.djangoproject.com/en/1.4/topics/generic-views/}.
 Une vue générique est une fonction fournie par la bibliothèque Django permettant
 d'exécuter des actions simples, "que tout le monde fait". Comme par exemple, pour lister
 un sous-ensemble d'un type d'objet. Dans
@@ -485,6 +480,10 @@ $ source ve/bin/activate
 \color{Blue}{# Installation des dépendances}
 (ve) $ pip install -r requirements.txt
 \end{Verbatim}
+
+Il est important de souligner que la plateforme n'est pas dépendante uniquement de
+bibliothèque Python. Pour faire du traitement de documents, le système hôte doit aussi
+posséder l'application \textit{graphic magic} et \textit{poppler}.
 
 
 \section{Description des fonctionnalités}
@@ -760,7 +759,7 @@ de données pour savoir combien de documents il y a à traiter. S'il y en a, il 
 
 Le rôle principal de chaque enfant est d'extraire de chaque document une série
 d'images représentant les pages. Comme l'indique la capture d'écran de la figure \ref{fig:viewer},
-il y a deux types d'images : les miniatures (180px de large) et la page au zoom 
+il y a deux types d'images : les miniatures (118px de large) et la page au zoom 
 choisie par l'utilisateur. Malheureusement, le zoom utilisateur est calculé par
 le navigateur à partir d'un rendu : généralement, il n'est pas très bon, et plus il
 est éloigné de la résolution d'origine, moins il est bon. Pour chaque page, en
@@ -882,7 +881,7 @@ SELECT count(*) FROM users
   WHERE username = "lama" and password = "secret";
 
 SELECT count(*) FROM users
-  WHERE username = "\textcolor{Blue}{lama" or 1 = 1 LIMIT 1;#}" and password = "";
+  WHERE username = "\textcolor{Blue}{lama" or 1 = 1 LIMIT 1; --}" and password = "";
 \end{Verbatim}
 
 Avec le framework Django, l'ORM est protégé contre les injections SQL à plusieurs
