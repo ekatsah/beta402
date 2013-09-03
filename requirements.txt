@@ -1,7 +1,9 @@
--i http://pypi.urlab.be/simple
 Django==1.4
-django-extensions   #Some useful tools
-django_polymorphic
-south
-django-template-fragments
-markdown
+Markdown==2.3.1
+South==0.7.6
+distribute==0.6.31
+django-extensions==1.1.1
+django-polymorphic==0.4.2
+django-template-fragments==0.1.3
+six==1.3.0
+wsgiref==0.1.2
